@@ -21,4 +21,6 @@ $lang['DATE_START'] = 'Debut (jj/mm/aaaa)';
 $lang['DATE_STOP'] = 'Fin (jj/mm/aaaa)';
 $lang['DESCRIPTION'] = 'Description';
 $lang['CREATE'] = 'Creer';
+$lang['LANG'] = 'Langue';
+$lang['ALL_TASKS'] = 'Liste des taches';
 ?>

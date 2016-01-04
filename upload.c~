@@ -1,0 +1,121 @@
+#include <stdio.h>  /* stdin, printf, fread */
+#include <stdlib.h> /* malloc, getenv */
+#include <ctype.h>  /* isalpha */
+#include <string.h> /* strchr, strcmp */
+#include <stdio.h>
+#include <mimetic/mimetic.h>
+
+int main() 
+{ 
+FILE *fichier = NULL;
+
+int content_length; 
+char * s_content; 
+int i; 
+int c; 
+
+  printf("%s%c%c\n", "Content-Type:text/html;charset=iso-8859-1",13,10);    
+  printf(" <html><title>Photo chargee</title><body> \n");   
+  printf(" <BR> Uploading result \n") ;  
+
+ content_length = atoi(getenv("CONTENT_LENGTH")); 
+  if(content_length == 0) 
+    return 0; 
+    
+  s_content = (char *) malloc(sizeof(char) * content_length); 
+  if(s_content == NULL) 
+    return 0; 
+	
+	fgets(s_content, content_length, stdin);
+	
+	fichier = fopen("test.jpg", "a+");
+
+    fprintf(fichier, "%s\n", s_content);
+	
+    printf("<p> s_content: ");
+    for ( i = 0 ; i < content_length && (c = getchar()) != EOF ; i++ ) {
+      printf("%c", c);
+    }
+   printf(" </p>");  
+  
+  if(ferror(stdin)) 
+    printf("<BR>ERROR"); 
+  else 
+    printf("<BR>NO ERROR");
+
+  printf("<BR>End i = %d", i); 
+
+  free(s_content); 
+  printf(" </body></html>");
+
+  return 1; 
+}
+/*
+   
+#define TAILLE_LIGNE 123
+
+#define TAILLE_AUTEUR 23
+
+#define TAILLE_TEXTE 103
+
+   
+char* decode(char *src, char *last)
+{
+char *dest = NULL;
+dest = (char *)malloc(sizeof(char)*TAILLE_LIGNE);
+
+ for(; src != last; src++, dest++)
+   if(*src == '+')
+     *dest = ' ';
+   else if(*src == '%') {
+     int code;
+     if(sscanf(src+1, "%2x", &code) != 1) code = '?';
+     *dest = code;
+     src +=2; }     
+   else
+     *dest = *src;
+ *dest = '\n';
+ *++dest = '\0';
+ 
+ return dest;
+}
+ 
+
+int main(void)
+
+{
+
+     char ligne[TAILLE_LIGNE] = "";
+
+     char *tdecode = NULL;
+
+     FILE *fichier = NULL;
+
+     printf("Content-Type: text/html; charset=utf-8\n\n");
+
+	 tdecode = (char *)malloc(sizeof(char)*TAILLE_LIGNE);
+
+     fgets(ligne, TAILLE_LIGNE, stdin);
+
+	 tdecode = decode(ligne, ligne+TAILLE_LIGNE);
+     
+     fichier = fopen("test.txt", "a+");
+
+
+     fprintf(fichier, "%s\n", ligne);
+
+     fclose(fichier);
+
+ 
+
+     fichier = fopen("test.txt", "r");
+
+     fgets(ligne, TAILLE_LIGNE, fichier);
+     
+     printf("%s\n", ligne);
+
+
+     return 0;
+
+}
+*/

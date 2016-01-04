@@ -18,7 +18,7 @@
 		<title> <?php echo $lang['PAGE_TITLE']; ?></title>
 		
 		<!-- insertion du css-->
-		<link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="bootstrap.min.css">
 			
 	</head>
 	<body>
