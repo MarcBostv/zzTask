@@ -140,21 +140,57 @@
 		        $fin=$_POST['fin'];
 		        $description=$_POST['description'];
 		        
-		        //on concatene
-		        $champs=$id . " " . $nomTask . " " . $debut . " " . $fin . " " . $description;
+		        list($day, $month, $year) = split('[/.-]', $debut);
+		        list($dayf, $monthf, $yearf) = split('[/.-]', $fin);
+		        $debutok=checkdate($month, $day, $year);
+		        $finok=checkdate($monthf, $dayf, $yearf);
 		        
-		        //on envoie dans le fichier
-		        $fp=ouvertureFichier("task.txt");
-		        fputs($fp, $champs);
-		        fputs($fp, "\n"); 
-		        fclose($fp);
+		        if(!$debutok || !$finok)
+					echo("Erreur dans la saisie des dates");
+					else {
+					if(!$nomTask)
+						echo("Erreur, saisissez un nom de tache");
+						else {
+							if($year>$yearf)
+								echo("Erreur, l'annee de fin est anterieure a l'annee de debut");
+								else {
+									if($year==$yearf && $month>$monthf)
+										echo("Erreur, le mois de fin est anterieur au mois de debut");
+										else {
+											if($month==$monthf && $day>$dayf)
+												echo("Erreur, le jour de fin est anterieur au jour de debut");
+											    else {
+													if($year<date('Y',time()))			
+														echo("Erreur, mauvaise annee saisie");
+														else {
+															if($year==date('Y',time()) && $month<date('m',time()))
+																echo("Erreur, mauvais mois saisi");
+																else {
+																	if($month==date('m',time()) && $day<date('d',time()))
+																		echo("Mauvais jour saisi");
+																		 else {
+																			 //on concatene
+																			$champs=$id . " " . $nomTask . " " . $debut . " " . $fin . " " . $description;
+																        
+																			//on envoie dans le fichier
+																			$fp=ouvertureFichier("task.txt");
+																			fputs($fp, $champs);
+																			fputs($fp, "\n"); 
+																			fclose($fp);
+																			header("Location:nouvelleTache.php");
+																		 }	
+																}
+														}
+												}
+										}
+									}
+								}
+							}
 		}
 		else
 		{
-				// On ajoute une note en precisant qu'il faut tout remplir
-				exit;
+			echo("Erreur lors de la recuperration des variables de session");
 		}	
-		header("Location:nouvelleTache.php");
 	}	
 		//function deleteTask
 ?>

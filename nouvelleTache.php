@@ -46,12 +46,12 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-5">
-					<input type="date" name="debut" placeholder=" <?php echo $lang['DATE_START'];?>" min=<?php getTime() ?> > 
+					<input type="date" name="debut" placeholder=" <?php echo $lang['DATE_START'];?>"> 
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-5">
-					<input type="date" name="fin" placeholder=" <?php echo $lang['DATE_STOP'];?>"min=<?php getTime() ?> >
+					<input type="date" name="fin" placeholder=" <?php echo $lang['DATE_STOP'];?>">
 				</div>
 			</div>
 			<div class="form-group">
