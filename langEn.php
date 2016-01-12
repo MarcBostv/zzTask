@@ -23,4 +23,12 @@ $lang['DESCRIPTION'] = 'Description';
 $lang['CREATE'] = 'Create';
 $lang['LANG'] = 'Language';
 $lang['ALL_TASKS'] = 'All the tasks';
+$lang['VOIR_TOUT'] = 'See all';
+$lang['T_PAST'] = 'Previous Tasks';
+$lang['T_PRES'] = 'Current Tasks';
+$lang['T_FUTURE'] = 'Next Tasks';
+$lang['T_USER'] = 'User';
+$lang['T_FROM'] = 'Task from';
+$lang['T_TO'] = 'to';
+$lang['T_Content'] = 'Content/Description';
 ?>
