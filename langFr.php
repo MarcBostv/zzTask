@@ -28,7 +28,7 @@ $lang['T_PAST'] = 'Tâches passées';
 $lang['T_PRES'] = 'Tâches en cours';
 $lang['T_FUTURE'] = 'Tâches à venir';
 $lang['T_USER'] = 'Utilisateur';
-$lang['T_FROM'] = 'Tâche du';
-$lang['T_TO'] = 'au';
+$lang['T_FROM'] = 'Tâche du ';
+$lang['T_TO'] = ' au ';
 $lang['T_Content'] = 'Contenu/Descriptif de la tâche';
 ?>

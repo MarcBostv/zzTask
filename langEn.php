@@ -28,7 +28,7 @@ $lang['T_PAST'] = 'Previous Tasks';
 $lang['T_PRES'] = 'Current Tasks';
 $lang['T_FUTURE'] = 'Next Tasks';
 $lang['T_USER'] = 'User';
-$lang['T_FROM'] = 'Task from';
-$lang['T_TO'] = 'to';
+$lang['T_FROM'] = 'Task from ';
+$lang['T_TO'] = ' to ';
 $lang['T_Content'] = 'Content/Description';
 ?>

@@ -35,6 +35,7 @@
 
 	<body>
 		<div class="row">
+			<!-- colone de gauche-->
 			<div class="col-md-4">
 				<div class="thumbnail">
 					<div class="caption">
@@ -42,24 +43,15 @@
 							<div class="pull-right"><a href="#" class="btn btn-primary" role="button"><?php echo $lang['VOIR_TOUT']; ?></a></div>
 							<h3><?php echo $lang['T_PAST']; ?></h3>
 						</div>
-						<div class="panel panel-primary">
-							<div class="panel-heading">La tâche</div>
-							<div class="panel-body">
-								<p>
-								<?php
-									if(strcmp($_SESSION['id'],"admin@isima.fr") == 0){
-										?><b><?php echo $lang['T_USER']; ?> :</b> toto@isima.fr<?php
-									}
-								?>
-								</p>
-								<p><b><?php echo $lang['T_FROM']; ?> </b>01:01:2001 <b><?php echo $lang['T_TO']; ?></b> 02:02:2002 </p>
-								<p><b><?php echo $lang['T_Content']; ?> : </b></p>
-							</div>
-						</div>
+
+						<?php afficherTask(); ?>
+						<?php afficherTask(); ?>
+
 					</div>
 				</div>
 			</div>
 
+			<!-- colone du milieu-->
 			<div class="col-md-4">
 				<div class="thumbnail">
 					<div class="caption">
@@ -67,24 +59,18 @@
 							<div class="pull-right"><a href="#" class="btn btn-primary" role="button"><?php echo $lang['VOIR_TOUT']; ?></a></a></div>
 							<h3><?php echo $lang['T_PRES']; ?></h3>
 						</div>
-						<div class="panel panel-primary">
-							<div class="panel-heading">La tâche</div>
-							<div class="panel-body">
-								<p>
-								<?php
-									if(strcmp($_SESSION['id'],"toto@isima.fr") == 0){
-										?><b><?php echo $lang['T_USER']; ?> :</b> toto@isima.fr<?php
-									}
-								?>
-								</p>
-								<p><b><?php echo $lang['T_FROM']; ?> </b>01:01:2001 <b><?php echo $lang['T_TO']; ?></b> 02:02:2002 </p>
-								<p><b><?php echo $lang['T_Content']; ?> : </b></p>
-							</div>
-						</div>
+
+						<?php afficherTask(); ?>
+						<?php afficherTask(); ?>
+						<?php afficherTask(); ?>
+						<?php afficherTask(); ?>						
+						<?php afficherTask(); ?>
+						
 					</div>
 				</div>
 			</div>
 
+			<!-- colone de droite-->
 			<div class="col-md-4">
 				<div class="thumbnail">
 					<div class="caption">
@@ -92,53 +78,8 @@
 							<div class="pull-right"><a href="#" class="btn btn-primary" role="button"><?php echo $lang['VOIR_TOUT']; ?></a></div>
 							<h3><?php echo $lang['T_FUTURE']; ?></h3>
 						</div>
-						<div class="panel panel-primary">
-							<div class="panel-heading">La tâche</div>
-							<div class="panel-body">
-								<p><b><?php echo $lang['T_FROM']; ?> </b>01:01:2001 <b><?php echo $lang['T_TO']; ?></b> 02:02:2002 </p>
-								<p><b><?php echo $lang['T_Content']; ?> : </b></p>
-							</div>
-						</div>
-						
-						<div class="panel panel-primary">
-							<div class="panel-heading">La tâche</div>
-							<div class="panel-body">
-								<p><b><?php echo $lang['T_FROM']; ?> </b>01:01:2001 <b><?php echo $lang['T_TO']; ?></b> 02:02:2002 </p>
-								<p><b><?php echo $lang['T_Content']; ?> : </b></p>
-							</div>
-						</div>
-						
-						<div class="panel panel-primary">
-							<div class="panel-heading">La tâche</div>
-							<div class="panel-body">
-								<p><b><?php echo $lang['T_FROM']; ?> </b>01:01:2001 <b><?php echo $lang['T_TO']; ?></b> 02:02:2002 </p>
-								<p><b><?php echo $lang['T_Content']; ?> : </b></p>
-							</div>
-						</div>
-						
-						<div class="panel panel-primary">
-							<div class="panel-heading">La tâche</div>
-							<div class="panel-body">
-								<p><b><?php echo $lang['T_FROM']; ?> </b>01:01:2001 <b><?php echo $lang['T_TO']; ?></b> 02:02:2002 </p>
-								<p><b><?php echo $lang['T_Content']; ?> : </b></p>
-							</div>
-						</div>
-						
-						<div class="panel panel-primary">
-							<div class="panel-heading">La tâche</div>
-							<div class="panel-body">
-								<p><b><?php echo $lang['T_FROM']; ?> </b>01:01:2001 <b><?php echo $lang['T_TO']; ?></b> 02:02:2002 </p>
-								<p><b><?php echo $lang['T_Content']; ?> : </b></p>
-							</div>
-						</div>
-						
-						<div class="panel panel-primary">
-							<div class="panel-heading">La tâche</div>
-							<div class="panel-body">
-								<p><b><?php echo $lang['T_FROM']; ?> </b>01:01:2001 <b><?php echo $lang['T_TO']; ?></b> 02:02:2002 </p>
-								<p><b><?php echo $lang['T_Content']; ?> : </b></p>
-							</div>
-						</div>
+
+						<?php afficherTask(); ?>
 						
 					</div>
 				</div>
