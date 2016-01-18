@@ -1,7 +1,1 @@
-toto@isima.fr  la premiere tache  12/01/2016  10/02/2018  ceci est un test assez long pour voir ce que ca donne d'avoir un long texte dans la description donc voila le resultat
-tutu@isima.fr  tache  04/02/2016  12/11/2018  ceci est un troisième essai
-toto@isima.fr  hello 2  30/11/2015  01/01/2016  cette description n'a rien à voir avec les précédentes
-admin@isima.fr  la tache de l'admin  20/11/2015  01/08/2016  cette description n'a vraiment rien à voir avec les précédentes
-tutu@isima.fr  tache a tutu  24/11/2016  27/07/2017  cette description n'a presque rien à voir avec les précédentes
 
-//Probleme nom de la tache : du coup 2espaces entre chaque champs
