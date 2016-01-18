@@ -1,10 +1,8 @@
 <?php
-
     if(!isset($_SESSION)) 
     { 
         session_start(); 
     } 
-
 	function controleSession() //ne pas tester
 	{
 		if($_SESSION['connect']!=1)
@@ -14,7 +12,6 @@
 			exit;
 		}
 	}
-
 	function controleLang()
 	{
 		if(!isset($_SESSION['lang']))
@@ -38,7 +35,6 @@
 		}
 		return $lang_file;
 	}
-
 	function getTime()
 	{
 		date_default_timezone_set('Europe/Paris');
@@ -54,7 +50,6 @@
 		}
 		return $fp;
 	}
-
 	function connexion()
 	{
 				// On initialise connect à 0
@@ -163,7 +158,7 @@
 										else {
 											if($month==$monthf && $day>$dayf)
 												echo("Erreur, le jour de fin est anterieur au jour de debut");
-												else {
+											   else {
 													if($year<date('Y',time()))			
 														echo("Erreur, mauvaise annee saisie");
 														else {
@@ -175,7 +170,7 @@
 																		else {
 																			//on concatene
 																			$champs=$id . "  " . $nomTask . "  " . $debut . "  " . $fin . "  " . $description;
-																        
+																       
 																			//on envoie dans le fichier
 																			$fp=ouvertureFichier("task.txt");
 																			fputs($fp, $champs);
@@ -196,7 +191,6 @@
 			echo("Erreur lors de la recuperration des variables de session");
 		}	
 	}	
-
 	function recupTask()
 	{
 		$fp=ouvertureFichier("task.txt");
@@ -208,15 +202,12 @@
 		echo $task[3]; //dateFin
 		echo $task[4]; //description*/
 		fclose($fp);
-		return $task;
+		afficherTask($task);
 	}
-
-	function afficherTask()
+	function afficherTask($task)
 	{
-
   		$file=controleLang();
-  		include $file;
-		$task=recupTask();?>
+  		include $file;?>
 		<div class="panel panel-primary">
 			<div class="panel-heading"><?php echo $task[1]?></div>
 			<div class="panel-body">
@@ -234,4 +225,72 @@
 	}
 	
 		//function deleteTask
+		
+	function taskPassees()
+	{
+		$auj=getTime();
+		$dateAuj=explode("/", $auj,3);
+		$fp=ouvertureFichier("task.txt");
+		$ligne=fgets($fp);
+		while(!feof($fp)){
+			$task = explode("  ", $ligne, 5);
+			$dateF=explode("/", $task[3],3);
+			
+			if(($dateAuj[2]>=$dateF[2])){
+				if( ($dateAuj[2]>$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]>=$dateF[1])))){
+					if(($dateAuj[2]>$dateF[2]) || ($dateAuj[1]>$dateF[1]) || (($dateAuj[1]==$dateF[1])&&(($dateAuj[0]>=$dateF[0])))){
+						afficherTask($task);
+					}
+				}
+			}
+		$ligne=fgets($fp);
+		}
+		fclose($fp);
+	}
+	
+		function taskPresentes()
+	{
+		$auj=getTime();
+		$dateAuj=explode("/", $auj,3);
+		$fp=ouvertureFichier("task.txt");
+		$ligne=fgets($fp);
+		while(!feof($fp)){
+			$task = explode("  ", $ligne, 5);
+			$dateF=explode("/", $task[3],3);
+			$dateD=explode("/", $task[2],3);
+			
+			if( ($dateAuj[2]<=$dateF[2])  &&  ($dateAuj[2]>=$dateD[2])){
+				if( (($dateAuj[2]<$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]<=$dateF[1]))))  &&  (($dateAuj[2]>$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]>=$dateD[1]))))){
+					if( (($dateAuj[2]<$dateF[2]) || ($dateAuj[1]<$dateF[1]) || (($dateAuj[1]==$dateF[1])&&(($dateAuj[0]<=$dateF[0]))))
+						&& (($dateAuj[2]>$dateD[2]) || ($dateAuj[1]>$dateD[1]) || (($dateAuj[1]==$dateD[1])&&(($dateAuj[0]>=$dateD[0]))))){
+						afficherTask($task);
+					}
+				}
+			}
+		$ligne=fgets($fp);
+		}
+		fclose($fp);
+	}
+	
+		function taskFutures()
+	{
+		$auj=getTime();
+		$dateAuj=explode("/", $auj,3);
+		$fp=ouvertureFichier("task.txt");
+		$ligne=fgets($fp);
+		while(!feof($fp)){
+			$task = explode("  ", $ligne, 5);
+			$dateD=explode("/", $task[2],3);
+			
+			if(($dateAuj[2]<=$dateD[2])){
+				if( ($dateAuj[2]<$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]<=$dateD[1])))){
+					if(($dateAuj[2]<$dateD[2]) || ($dateAuj[1]<$dateD[1]) || (($dateAuj[1]==$dateD[1])&&(($dateAuj[0]<=$dateD[0])))){
+						afficherTask($task);
+					}
+				}
+			}
+		$ligne=fgets($fp);
+		}
+		fclose($fp);
+	}
 ?>
