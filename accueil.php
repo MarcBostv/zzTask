@@ -8,12 +8,10 @@
 		deconnexion();
 		return;
 	}
-
   if(isset($_GET['lang']))
   {
     $_SESSION['lang']=$_GET['lang'];
   }
-
   include_once controleLang();
 	
 	$selected="accueil";
@@ -43,10 +41,9 @@
 							<div class="pull-right"><a href="#" class="btn btn-primary" role="button"><?php echo $lang['VOIR_TOUT']; ?></a></div>
 							<h3><?php echo $lang['T_PAST']; ?></h3>
 						</div>
-
-						<?php afficherTask(); ?>
-						<?php afficherTask(); ?>
-
+						
+						<?php taskPassees();?>
+						
 					</div>
 				</div>
 			</div>
@@ -59,13 +56,9 @@
 							<div class="pull-right"><a href="#" class="btn btn-primary" role="button"><?php echo $lang['VOIR_TOUT']; ?></a></a></div>
 							<h3><?php echo $lang['T_PRES']; ?></h3>
 						</div>
-
-						<?php afficherTask(); ?>
-						<?php afficherTask(); ?>
-						<?php afficherTask(); ?>
-						<?php afficherTask(); ?>						
-						<?php afficherTask(); ?>
 						
+						<?php taskPresentes();?>
+
 					</div>
 				</div>
 			</div>
@@ -78,14 +71,12 @@
 							<div class="pull-right"><a href="#" class="btn btn-primary" role="button"><?php echo $lang['VOIR_TOUT']; ?></a></div>
 							<h3><?php echo $lang['T_FUTURE']; ?></h3>
 						</div>
-
-						<?php afficherTask(); ?>
+						
+						<?php taskFutures();?>
 						
 					</div>
 				</div>
 			</div>
 		</div>
 	</body>
-</html>			
-
-
+</html>	
