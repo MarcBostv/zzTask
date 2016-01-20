@@ -26,7 +26,7 @@
 		<div class="container">
 		<!-- > Texte d'explication <-->	
 		<h3> <?php echo $lang['ID']; ?> </h3>	
-			<form method="post" action="">
+			<form method="post" action="index.php">
 				<div class="form-group">
 					<label for="id" class="col-sm-2 control-label"> <?php echo  $lang['ID_FIELD']; ?> </label>
 					<div class="col-sm-10">
