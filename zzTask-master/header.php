@@ -19,6 +19,7 @@
 					<li <?php if ($selected == "nouvelleTache") echo 'class="active"' ?>><a href="nouvelleTache.php"><?php echo $lang['CREATE_TASK']; ?></a></li>
 	      		</ul>
 	      		<ul class="nav navbar-nav navbar-right">
+					<li><a href="accueil.php?action=supr"><?php echo $lang['SUPR'];?></a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $lang['LANG'];?><span class="caret"></span></a>
 	       				<ul class="dropdown-menu">

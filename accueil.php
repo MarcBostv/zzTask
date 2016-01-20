@@ -9,10 +9,16 @@
 		return;
 	}
 
-  if(isset($_GET['lang']))
-  {
-    $_SESSION['lang']=$_GET['lang'];
-  }
+	if(isset($_GET['lang']))
+	{
+		$_SESSION['lang']=$_GET['lang'];
+	}
+	
+  	if(isset($_GET['action']) && $_GET['action'] == 'supr')
+	{
+		suppressionTask();
+		return;
+	}
 
   include_once controleLang();
 	
@@ -40,7 +46,6 @@
 				<div class="thumbnail">
 					<div class="caption">
 						<div>
-							<div class="pull-right"><a href="#" class="btn btn-primary" role="button"><?php echo $lang['VOIR_TOUT']; ?></a></div>
 							<h3><?php echo $lang['T_PAST']; ?></h3>
 						</div>
 						
@@ -55,7 +60,6 @@
 				<div class="thumbnail">
 					<div class="caption">
 						<div>
-							<div class="pull-right"><a href="#" class="btn btn-primary" role="button"><?php echo $lang['VOIR_TOUT']; ?></a></a></div>
 							<h3><?php echo $lang['T_PRES']; ?></h3>
 						</div>
 						
@@ -70,7 +74,6 @@
 				<div class="thumbnail">
 					<div class="caption">
 						<div>
-							<div class="pull-right"><a href="#" class="btn btn-primary" role="button"><?php echo $lang['VOIR_TOUT']; ?></a></div>
 							<h3><?php echo $lang['T_FUTURE']; ?></h3>
 						</div>
 						

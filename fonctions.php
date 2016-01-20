@@ -48,7 +48,7 @@
 	
 	function ouvertureFichier($nomFichier)
 	{
-		if ( ($fp = fopen($nomFichier, "a+"))!=true ) {
+		if ( ($fp = fopen($nomFichier, "r+"))!=true ) {
 			echo "Erreur ouverture fichier !";
 			$fp=false;
 		}
@@ -112,7 +112,7 @@
 		else
 		{
 			// Sinon on supprime les éventuelles données stockées dans la variable de session
-			header("Location:deconnexion.php");
+			header("Location:accueil.php?action=deco");
 		}
 	}
 		
@@ -202,11 +202,7 @@
 		$fp=ouvertureFichier("task.txt");
 		$ligne=fgets($fp);
 		$task = explode("  ", $ligne, 5);
-		/*echo $task[0]; //user
-		echo $task[1]; //nomTache
-		echo $task[2]; //dateDebut
-		echo $task[3]; //dateFin
-		echo $task[4]; //description*/
+
 		fclose($fp);
 		afficherTask($task);
 	}
@@ -227,12 +223,10 @@
 					?>
 				</p>
 				<p><b><?php echo $lang['T_FROM']; ?> </b> <?php echo $task[2] ?><b><?php echo $lang['T_TO']; ?></b><?php echo $task[3] ?></p>
-				<p><b><?php echo $lang['T_Content']; ?> : </b><?php echo $task[4] ?></p>
+				<p><b><?php echo $lang['T_CONTENT']; ?> : </b><?php echo $task[4] ?></p>
 			</div>
 		</div><?php	
 	}
-	
-		//function deleteTask
 		
 	function taskPassees()
 	{
@@ -242,21 +236,25 @@
 		$ligne=fgets($fp);
 		while(!feof($fp)){
 			$task = explode("  ", $ligne, 5);
+			$user = $task[0];
 			$dateF=explode("/", $task[3],3);
 			
-			if(($dateAuj[2]>=$dateF[2])){
-				if( ($dateAuj[2]>$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]>=$dateF[1])))){
-					if(($dateAuj[2]>$dateF[2]) || ($dateAuj[1]>$dateF[1]) || (($dateAuj[1]==$dateF[1])&&(($dateAuj[0]>=$dateF[0])))){
-						afficherTask($task);
+			if((strcmp($_SESSION['id'], "admin@isima.fr") == 0) || (strcmp($user, $_SESSION['id']) == 0))
+			{
+				if(($dateAuj[2]>=$dateF[2])){
+					if( ($dateAuj[2]>$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]>=$dateF[1])))){
+						if(($dateAuj[2]>$dateF[2]) || ($dateAuj[1]>$dateF[1]) || (($dateAuj[1]==$dateF[1])&&(($dateAuj[0]>=$dateF[0])))){
+							afficherTask($task);
+						}
 					}
 				}
 			}
-		$ligne=fgets($fp);
+			$ligne=fgets($fp);
 		}
 		fclose($fp);
 	}
 	
-		function taskPresentes()
+	function taskPresentes()
 	{
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
@@ -266,21 +264,25 @@
 			$task = explode("  ", $ligne, 5);
 			$dateF=explode("/", $task[3],3);
 			$dateD=explode("/", $task[2],3);
+			$user = $task[0];
 			
-			if( ($dateAuj[2]<=$dateF[2])  &&  ($dateAuj[2]>=$dateD[2])){
-				if( (($dateAuj[2]<$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]<=$dateF[1]))))  &&  (($dateAuj[2]>$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]>=$dateD[1]))))){
-					if( (($dateAuj[2]<$dateF[2]) || ($dateAuj[1]<$dateF[1]) || (($dateAuj[1]==$dateF[1])&&(($dateAuj[0]<=$dateF[0]))))
-						&& (($dateAuj[2]>$dateD[2]) || ($dateAuj[1]>$dateD[1]) || (($dateAuj[1]==$dateD[1])&&(($dateAuj[0]>=$dateD[0]))))){
-						afficherTask($task);
+			if((strcmp($_SESSION['id'], "admin@isima.fr") == 0) || (strcmp($user, $_SESSION['id']) == 0))
+			{
+				if( ($dateAuj[2]<=$dateF[2])  &&  ($dateAuj[2]>=$dateD[2])){
+					if( (($dateAuj[2]<$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]<=$dateF[1]))))  &&  (($dateAuj[2]>$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]>=$dateD[1]))))){
+						if( (($dateAuj[2]<$dateF[2]) || ($dateAuj[1]<$dateF[1]) || (($dateAuj[1]==$dateF[1])&&(($dateAuj[0]<=$dateF[0]))))
+							&& (($dateAuj[2]>$dateD[2]) || ($dateAuj[1]>$dateD[1]) || (($dateAuj[1]==$dateD[1])&&(($dateAuj[0]>=$dateD[0]))))){
+							afficherTask($task);
+						}
 					}
 				}
 			}
-		$ligne=fgets($fp);
+			$ligne=fgets($fp);
 		}
 		fclose($fp);
 	}
 	
-		function taskFutures()
+	function taskFutures()
 	{
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
@@ -289,16 +291,44 @@
 		while(!feof($fp)){
 			$task = explode("  ", $ligne, 5);
 			$dateD=explode("/", $task[2],3);
+			$user = $task[0];
 			
-			if(($dateAuj[2]<=$dateD[2])){
-				if( ($dateAuj[2]<$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]<=$dateD[1])))){
-					if(($dateAuj[2]<$dateD[2]) || ($dateAuj[1]<$dateD[1]) || (($dateAuj[1]==$dateD[1])&&(($dateAuj[0]<=$dateD[0])))){
-						afficherTask($task);
+			if((strcmp($_SESSION['id'], "admin@isima.fr") == 0) || (strcmp($user, $_SESSION['id']) == 0))
+			{
+				if(($dateAuj[2]<=$dateD[2])){
+					if( ($dateAuj[2]<$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]<=$dateD[1])))){
+						if(($dateAuj[2]<$dateD[2]) || ($dateAuj[1]<$dateD[1]) || (($dateAuj[1]==$dateD[1])&&(($dateAuj[0]<=$dateD[0])))){
+							afficherTask($task);
+						}
 					}
 				}
 			}
-		$ligne=fgets($fp);
+			$ligne=fgets($fp);
 		}
 		fclose($fp);
+	}
+	
+	function suppressionTask()
+	{
+		$lines=file("task.txt");
+		$tableau=array();
+		foreach ($lines as $value){
+			$task = explode("  ", $value, 5);
+			$dateF=explode("/", $task[3],3);
+			$dateTask=$dateF[2].$dateF[1].$dateF[0];
+			$tableau[$dateTask] = $value;
+		}
+		date_default_timezone_set('Europe/Paris');
+		$date = date('Ymd', strtotime('-1 month'));
+		
+		$fp=fopen("task.txt", "w+");
+		
+ 		foreach ($tableau as $dateTask => $ligne) {
+			if($dateTask > $date)
+				fwrite($fp, $ligne);
+		}
+	fclose($fp);
+	
+	header("Location:accueil.php");
 	}
 ?>
