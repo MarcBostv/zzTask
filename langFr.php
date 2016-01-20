@@ -1,3 +1,4 @@
+
 <?php
 /* 
 ------------------
@@ -30,5 +31,6 @@ $lang['T_FUTURE'] = 'Tâches à venir';
 $lang['T_USER'] = 'Utilisateur';
 $lang['T_FROM'] = 'Tâche du ';
 $lang['T_TO'] = ' au ';
-$lang['T_Content'] = 'Contenu/Descriptif de la tâche';
+$lang['T_CONTENT'] = 'Contenu/Descriptif de la tâche';
+$lang['SUPR'] = 'Supprimer';
 ?>
