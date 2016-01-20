@@ -141,11 +141,8 @@
 		       $description=$_POST['description'];
 		       
 		       list($day, $month, $year) = split('[/.-]', $debut);
-				/*$laDate = explode("/", $debut,3);
-				$day=$laDate[1];
-				$month=$laDate[0];
-				$year=$laDate[2];*/
 		       list($dayf, $monthf, $yearf) = split('[/.-]', $fin);
+		       
 		       $debutok=checkdate($month, $day, $year);
 		       $finok=checkdate($monthf, $dayf, $yearf);
 		       
@@ -174,13 +171,12 @@
 																		echo("Mauvais jour saisi");
 																		else {
 																			//on concatene
-																			$champs=$id . "  " . $nomTask . "  " . $debut . "  " . $fin . "  " . $description;
+																			$champs=$id . "  " . $nomTask . "  " . $debut . "  " . $fin . "  " . $description . "\n";
 																       
+																			//on met en forme AAAAMMJJ
+																			$fin=$yearf.$monthf.$dayf;
 																			//on envoie dans le fichier
-																			$fp=ouvertureFichier("task.txt");
-																			fputs($fp, $champs);
-																			fputs($fp, "\n"); 
-																			fclose($fp);
+																			insertionFichier($fin, $champs);
 																			header("Location:nouvelleTache.php");
 																		}	
 																}
@@ -197,19 +193,52 @@
 		}	
 	}	
 
-	function recupTask()
+	function insertionFichier($fin, $champs)
 	{
+		$lines=file("task.txt");
+		$i=0;
+		$tableau=array();
+		foreach ($lines as $value){
+			$task = explode("  ", $value, 5);
+			$dateF=explode("/", $task[3],3);
+			$finToCompare=$dateF[2].$dateF[1].$dateF[0];
+			$tableau[$finToCompare] = $value;
+			$i++;
+		}
+		$tableau[$fin] = $champs;
+		ksort($tableau);
 		$fp=ouvertureFichier("task.txt");
-		$ligne=fgets($fp);
-		$task = explode("  ", $ligne, 5);
-
-		fclose($fp);
-		afficherTask($task);
+		
+ 		foreach ($tableau as $k => $v) {
+				fwrite($fp, $v);
+			}
+	fclose($fp);
 	}
 
+/*
+	function placePointeurFichier($fp, $fin){
+		$compare=1;
+		echo $fin;
+		
+		
+		do{
+			$freturn=$fp;
+			$ligne=fgets($fp);
+			$task = explode("  ", $ligne, 5);
+			$dateF=explode("/", $task[3],3);
+			$finToCompare=$dateF[2].$dateF[1].$dateF[0];
+			if($finToCompare>$fin){
+				$compare=0;}
+		}while(!feof($fp) && $compare!=0);
+		
+		return $freturn;
+	}
+*/
+		
+		//function deleteTask
+				
 	function afficherTask($task)
 	{
-
   		$file=controleLang();
   		include $file;?>
 		<div class="panel panel-primary">
@@ -227,7 +256,11 @@
 			</div>
 		</div><?php	
 	}
+
 		
+
+
+
 	function taskPassees()
 	{
 		$auj=getTime();
