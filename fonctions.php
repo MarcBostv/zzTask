@@ -275,7 +275,7 @@
 			if((strcmp($_SESSION['id'], "admin@isima.fr") == 0) || (strcmp($user, $_SESSION['id']) == 0))
 			{
 				if(($dateAuj[2]>=$dateF[2])){
-					if( ($dateAuj[2]>$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]>=$dateF[1])))){
+					if( ($dateAuj[2]>$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]>$dateF[1])))){
 						if(($dateAuj[2]>$dateF[2]) || ($dateAuj[1]>$dateF[1]) || (($dateAuj[1]==$dateF[1])&&(($dateAuj[0]>=$dateF[0])))){
 							afficherTask($task);
 						}
@@ -329,7 +329,7 @@
 			if((strcmp($_SESSION['id'], "admin@isima.fr") == 0) || (strcmp($user, $_SESSION['id']) == 0))
 			{
 				if(($dateAuj[2]<=$dateD[2])){
-					if( ($dateAuj[2]<$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]<=$dateD[1])))){
+					if( ($dateAuj[2]<$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]<$dateD[1])))){
 						if(($dateAuj[2]<$dateD[2]) || ($dateAuj[1]<$dateD[1]) || (($dateAuj[1]==$dateD[1])&&(($dateAuj[0]<=$dateD[0])))){
 							afficherTask($task);
 						}
