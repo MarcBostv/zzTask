@@ -5,12 +5,14 @@
 	
 	if(isset($_GET['action']) && $_GET['action'] == 'deco')
 	{
+		setcookie('id', $_SESSION['id']);
 		deconnexion();
 		return;
 	}
 	if(isset($_GET['lang']))
 	{
 		$_SESSION['lang']=$_GET['lang'];
+		setcookie('lang', $_SESSION['lang']);
 	}
 	
   	if(isset($_GET['action']) && $_GET['action'] == 'supr')
@@ -18,7 +20,8 @@
 		suppressionTask();
 		return;
 	}
-  include_once controleLang();
+	
+	include_once controleLang();
 	
 	$selected="accueil";
 ?>

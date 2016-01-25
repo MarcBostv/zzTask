@@ -23,11 +23,11 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $lang['LANG'];?><span class="caret"></span></a>
 	       				<ul class="dropdown-menu">
-							<li><a href="accueil.php?lang=fr">Fr</a></li>
-							<li><a href="accueil.php?lang=en">En</a></li>
+							<li><a href="<?php echo $selected ?>.php?lang=fr">Fr</a></li>
+							<li><a href="<?php echo $selected ?>.php?lang=en">En</a></li>
 	       				</ul>
 	       			</li>
-					<li><a href="accueil.php?action=deco"><?php echo $lang['LOGOUT'];?></a></li>
+					<li><a href="<?php echo $selected ?>.php?action=deco"><?php echo $lang['LOGOUT'];?></a></li>
 	   			</ul>
 	   		</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
