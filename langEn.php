@@ -32,5 +32,4 @@ $lang['T_FROM'] = 'Task from ';
 $lang['T_TO'] = ' to ';
 $lang['T_CONTENT'] = 'Content/Description';
 $lang['SUPR'] = 'Delete';
-
 ?>

@@ -19,6 +19,7 @@
 		if(!isset($_SESSION['lang']))
 		{
 			$_SESSION['lang']='';
+			$_SESSION['lang']=$_COOKIE['lang'];
 		}
 		
 		$lang=$_SESSION['lang'];
@@ -63,7 +64,8 @@
 		if (isset($_POST['mdp']) AND isset($_POST['id']))
 		{
 				// Si oui on récupère ces variables, en hachant le mot de passe
-		        $mdp=md5($_POST['mdp']);
+				$pass=$_POST['id'].$_POST['mdp'];
+		        $mdp=hash('sha512', $pass);
 		        $id=$_POST['id'];
 		}
 		else
@@ -116,7 +118,7 @@
 	}
 		
 	function deconnexion()
-	{
+	{		
 		// On supprime toutes les données contenues dedans
 		session_unset();
 		// On supprime notre variable de session
@@ -215,7 +217,7 @@
 			}
 	fclose($fp);
 	}
-				
+			
 	function afficherTask($task)
 	{
   		$file=controleLang();
@@ -225,7 +227,7 @@
 			<div class="panel-body">
 				<p>
 					<?php
-						if(strcmp($_SESSION['id'],"admin@isima.fr") == 0){
+						if(strcmp($_SESSION['id'],"david") == 0){
 							?><b><?php echo $lang['T_USER']; ?> :</b> <?php echo $task[0];
 						}
 					?>
@@ -247,7 +249,7 @@
 			$user = $task[0];
 			$dateF=explode("/", $task[3],3);
 			
-			if((strcmp($_SESSION['id'], "admin@isima.fr") == 0) || (strcmp($user, $_SESSION['id']) == 0))
+			if((strcmp($_SESSION['id'], "david") == 0) || (strcmp($user, $_SESSION['id']) == 0))
 			{
 				if(($dateAuj[2]>=$dateF[2])){
 					if( ($dateAuj[2]>$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]>=$dateF[1])))){
@@ -274,7 +276,7 @@
 			$dateD=explode("/", $task[2],3);
 			$user = $task[0];
 			
-			if((strcmp($_SESSION['id'], "admin@isima.fr") == 0) || (strcmp($user, $_SESSION['id']) == 0))
+			if((strcmp($_SESSION['id'], "david") == 0) || (strcmp($user, $_SESSION['id']) == 0))
 			{
 				if( ($dateAuj[2]<=$dateF[2])  &&  ($dateAuj[2]>=$dateD[2])){
 					if( (($dateAuj[2]<$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]<=$dateF[1]))))  &&  (($dateAuj[2]>$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]>=$dateD[1]))))){
@@ -301,7 +303,7 @@
 			$dateD=explode("/", $task[2],3);
 			$user = $task[0];
 			
-			if((strcmp($_SESSION['id'], "admin@isima.fr") == 0) || (strcmp($user, $_SESSION['id']) == 0))
+			if((strcmp($_SESSION['id'], "david") == 0) || (strcmp($user, $_SESSION['id']) == 0))
 			{
 				if(($dateAuj[2]<=$dateD[2])){
 					if( ($dateAuj[2]<$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]<=$dateD[1])))){
@@ -332,8 +334,11 @@
 		$fp=fopen("task.txt", "w+");
 		
  		foreach ($tableau as $dateTask => $ligne) {
-			if($dateTask > $date)
-				fwrite($fp, $ligne);
+			if ((strcmp($_SESSION['id'], "david") == 0) || (strcmp($_SESSION['id'], $task[0]) ==0)){
+				if($dateTask > $date){
+					fwrite($fp, $ligne);
+				}
+			}
 		}
 	fclose($fp);
 	
