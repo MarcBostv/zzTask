@@ -17,9 +17,17 @@
 				<ul class="nav navbar-nav">
 					<li <?php if ($selected == "accueil") echo 'class="active"' ?>><a href="accueil.php"><?php echo $lang['ALL_TASKS']; ?></a></li>
 					<li <?php if ($selected == "nouvelleTache") echo 'class="active"' ?>><a href="nouvelleTache.php"><?php echo $lang['CREATE_TASK']; ?></a></li>
+					<?php
+						if(strcmp($_SESSION['id'], "david") == 0){
+					?>
+							<li <?php if ($selected == "nouvelUtilisateur") echo 'class="active"' ?>><a href="nouvelUtilisateur.php"><?php echo $lang['CREATE_USER']; ?></a></li>
+					<?php
+						}
+					?>
+					
 	      		</ul>
 	      		<ul class="nav navbar-nav navbar-right">
-					<li><a href="accueil.php?action=supr"><?php echo $lang['SUPR'];?></a></li>
+					<li><a href="accueil.php?action=suprMois"><?php echo $lang['RAFFR'];?></a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $lang['LANG'];?><span class="caret"></span></a>
 	       				<ul class="dropdown-menu">
