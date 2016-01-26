@@ -26,16 +26,16 @@
 		<div class="container">
 		<!-- > Texte d'explication <-->	
 		<h3> <?php echo $lang['ID']; ?> </h3>	
-			<form method="post" action="index.php">
+			<form class="form-horizontal" method="post" action="index.php">
 				<div class="form-group">
-					<label for="id" class="col-sm-2 control-label"> <?php echo  $lang['ID_FIELD']; ?> </label>
-					<div class="col-sm-10">
+					<label class="control-label col-sm-2" for="id" class="col-sm-2 control-label"> <?php echo  $lang['ID_FIELD']; ?> </label>
+					<div class="col-sm-4">
 						<input type="text" class="form-control" id="id" name="id" value="<?php if(isset($_COOKIE['id'])) echo $_COOKIE['id']?>" placeholder="<?php echo $lang['ID_FIELD']?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="mdp" class="col-sm-2 control-label"> <?php echo  $lang['PASSWORD_FIELD']; ?> </label>
-					<div class="col-sm-10">
+					<label class="control-label col-sm-2" for="mdp" class="col-sm-2 control-label"> <?php echo  $lang['PASSWORD_FIELD']; ?> </label>
+					<div class="col-sm-4">
 						<input type="password" class="form-control" id="mdp" name="mdp" placeholder="<?php echo $lang['PASSWORD_FIELD']?>">
 					</div>
 				</div>

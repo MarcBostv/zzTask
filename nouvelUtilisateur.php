@@ -49,23 +49,23 @@
 
 	</head>
 	<body>
-
-			<form method="post" action="nouvelUtilisateur.php">
+		
+			<form class="form-horizontal" method="post" action="nouvelUtilisateur.php">
 				<div class="form-group">
-					<label for="newID" class="col-sm-2 control-label"> <?php echo  $lang['USER_FIELD']; ?> </label>
-					<div class="col-sm-10">
+					<label class="control-label col-sm-2" for="newID" class="col-sm-2 control-label"> <?php echo  $lang['USER_FIELD']; ?> </label>
+					<div class="col-sm-4">
 						<input type="text" class="form-control" id="newID" name="newID" placeholder="<?php echo $lang['USER_FIELD']?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="newMDP" class="col-sm-2 control-label"> <?php echo  $lang['PASSWORD_FIELD']; ?> </label>
-					<div class="col-sm-10">
+					<label class="control-label col-sm-2" for="newMDP" class="col-sm-2 control-label"> <?php echo  $lang['PASSWORD_FIELD']; ?> </label>
+					<div class="col-sm-4">
 						<input type="password" class="form-control" id="newMDP" name="newMDP" placeholder="<?php echo $lang['PASSWORD_FIELD']?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="newMDPbis" class="col-sm-2 control-label"> <?php echo  $lang['PASSWORD_FIELD_BIS']; ?> </label>
-					<div class="col-sm-10">
+					<label class="control-label col-sm-2" for="newMDPbis" class="col-sm-2 control-label"> <?php echo  $lang['PASSWORD_FIELD_BIS']; ?> </label>
+					<div class="col-sm-4">
 						<input type="password" class="form-control" id="newMDPbis" name="newMDPbis" placeholder="<?php echo $lang['PASSWORD_FIELD_BIS']?>">
 					</div>
 				</div>
@@ -75,8 +75,6 @@
 					</div>
 				</div>
 			</form>
-
-
 	</body>
 </html>			
 
