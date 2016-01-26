@@ -131,7 +131,7 @@
 		header("Location:index.php");
 	}
 		
-	function creationTask()
+function creationTask()
 	{
 		//ici on recupere les POST pour une tache ainsi que l'id user, et on la créée dans le .txt 
 			
@@ -231,7 +231,11 @@
   		$file=controleLang();
   		include $file;?>
 		<div class="panel panel-primary">
+<<<<<<< HEAD
 			<a href="accueil.php?action=supr&value=<?php echo $task[0] ?>&user=<?php echo $task[1] ?>" class="btn btn-primary pull-right"><?php echo $lang['SUPR'];?></a>
+=======
+			<a href="accueil.php?action=supr&value=<?php echo $task[0] ?>" class="btn btn-primary pull-right"><?php echo $lang['SUPR'];?></a>
+>>>>>>> c9893406b35b133d1c4ead94d70868f45d0f0dff
 			<div class="panel-heading"><?php echo $task[2]?></div>
 			<div class="panel-body">
 				<p>					

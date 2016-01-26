@@ -27,7 +27,11 @@
 					
 	      		</ul>
 	      		<ul class="nav navbar-nav navbar-right">
+<<<<<<< HEAD
 					<li><a href="accueil.php?action=suprMois"><?php echo $lang['RAFFR'];?></a></li>
+=======
+					<li><a href="accueil.php?action=suprMois"><?php echo $lang['SUPR'];?></a></li>
+>>>>>>> c9893406b35b133d1c4ead94d70868f45d0f0dff
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $lang['LANG'];?><span class="caret"></span></a>
 	       				<ul class="dropdown-menu">

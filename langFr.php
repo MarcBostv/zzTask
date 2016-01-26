@@ -36,7 +36,10 @@ $lang['T_FROM'] = 'Tâche du ';
 $lang['T_TO'] = ' au ';
 $lang['T_CONTENT'] = 'Contenu/Descriptif de la tâche';
 $lang['SUPR'] = 'Supprimer';
+<<<<<<< HEAD
 $lang['RAFFR'] = 'Liberer';
+=======
+>>>>>>> c9893406b35b133d1c4ead94d70868f45d0f0dff
 $lang['USER_FIELD'] = 'Nom du nouvel utilisateur (sans espace)';
 $lang['SIGNIN'] = 'Inscription';
 ?>
