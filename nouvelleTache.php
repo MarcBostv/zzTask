@@ -5,6 +5,7 @@
 	
 	if(isset($_GET['action']) && $_GET['action'] == 'deco')
 	{
+		setcookie('id', $_SESSION['id']);
 		deconnexion();
 		return;
 	}
@@ -14,9 +15,9 @@
 		setcookie('lang', $_SESSION['lang']);
 	}
 	
-  	if(isset($_GET['action']) && $_GET['action'] == 'supr')
+  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
 	{
-		suppressionTask();
+		suppressionTaskMois();
 		return;
 	}
 	

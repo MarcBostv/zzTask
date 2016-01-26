@@ -1,4 +1,5 @@
 <?php
+
     if(!isset($_SESSION)) 
     { 
         session_start(); 
@@ -18,8 +19,11 @@
 	{
 		if(!isset($_SESSION['lang']))
 		{
-			$_SESSION['lang']='';
-			$_SESSION['lang']=$_COOKIE['lang'];
+			if(isset($_COOKIE['lang'])){
+				$_SESSION['lang']=$_COOKIE['lang'];
+			}else{
+				$_SESSION['lang']='';
+			}
 		}
 		
 		$lang=$_SESSION['lang'];
@@ -127,7 +131,7 @@
 		header("Location:index.php");
 	}
 		
-	function creationTask()
+function creationTask()
 	{
 		//ici on recupere les POST pour une tache ainsi que l'id user, et on la créée dans le .txt 
 			
@@ -137,12 +141,15 @@
 			   // Si oui on récupère ces variables
 			   $id=$_SESSION['id'];
 		       $nmTsk=$_POST['nomTask'];
-		       $debut=$_POST['debut'];
-		       $fin=$_POST['fin'];
+		       $dbt=$_POST['debut'];
+		       $f=$_POST['fin'];
 		       $desc=$_POST['description'];
 		       
 		       $nomTask=str_replace("::;;::","_",$nmTsk);
 		       $description=str_replace("::;;::","_",$desc);
+		       $pattern="[^0-9]";
+		       $fin=preg_replace($pattern," / / ",$f);
+		       $debut=preg_replace($pattern," / / ",$dbt);
 		       list($day, $month, $year) = split('[/.-]', $debut);
 		       list($dayf, $monthf, $yearf) = split('[/.-]', $fin);
 		       
@@ -173,8 +180,9 @@
 																	if($month==date('m',time()) && $day<date('d',time()))
 																		echo("Mauvais jour saisi");
 																		else {
+																			$idTask = rand(0, 1000000);
 																			//on concatene
-																			$champs=$id . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
+																			$champs=$idTask . "::;;::" . $id . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
 																       
 																			//on met en forme AAAAMMJJ
 																			$fin=$yearf.$monthf.$dayf;
@@ -202,8 +210,8 @@
 		$i=0;
 		$tableau=array();
 		foreach ($lines as $value){
-			$task = explode("::;;::", $value, 5);
-			$dateF=explode("/", $task[3],3);
+			$task = explode("::;;::", $value, 6);
+			$dateF=explode("/", $task[4],3);
 			$finToCompare=$dateF[2].$dateF[1].$dateF[0];
 			$tableau[$finToCompare] = $value;
 			$i++;
@@ -217,23 +225,24 @@
 			}
 	fclose($fp);
 	}
-			
+				
 	function afficherTask($task)
 	{
   		$file=controleLang();
   		include $file;?>
 		<div class="panel panel-primary">
-			<div class="panel-heading"><?php echo $task[1]?></div>
+			<a href="accueil.php?action=supr&value=<?php echo $task[0] ?>" class="btn btn-primary pull-right"><?php echo $lang['SUPR'];?></a>
+			<div class="panel-heading"><?php echo $task[2]?></div>
 			<div class="panel-body">
-				<p>
+				<p>					
 					<?php
 						if(strcmp($_SESSION['id'],"david") == 0){
-							?><b><?php echo $lang['T_USER']; ?> :</b> <?php echo $task[0];
+							?><b><?php echo $lang['T_USER']; ?> :</b> <?php echo $task[1];
 						}
 					?>
 				</p>
-				<p><b><?php echo $lang['T_FROM']; ?> </b> <?php echo $task[2] ?><b><?php echo $lang['T_TO']; ?></b><?php echo $task[3] ?></p>
-				<p><b><?php echo $lang['T_CONTENT']; ?> : </b><?php echo $task[4] ?></p>
+				<p><b><?php echo $lang['T_FROM']; ?> </b> <?php echo $task[3] ?><b><?php echo $lang['T_TO']; ?></b><?php echo $task[4] ?></p>
+				<p><b><?php echo $lang['T_CONTENT']; ?> : </b><?php echo $task[5] ?></p>
 			</div>
 		</div><?php	
 	}
@@ -245,9 +254,9 @@
 		$fp=ouvertureFichier("task.txt");
 		$ligne=fgets($fp);
 		while(!feof($fp)){
-			$task = explode("::;;::", $ligne, 5);
-			$user = $task[0];
-			$dateF=explode("/", $task[3],3);
+			$task = explode("::;;::", $ligne, 6);
+			$user = $task[1];
+			$dateF=explode("/", $task[4],3);
 			
 			if((strcmp($_SESSION['id'], "david") == 0) || (strcmp($user, $_SESSION['id']) == 0))
 			{
@@ -271,10 +280,10 @@
 		$fp=ouvertureFichier("task.txt");
 		$ligne=fgets($fp);
 		while(!feof($fp)){
-			$task = explode("::;;::", $ligne, 5);
-			$dateF=explode("/", $task[3],3);
-			$dateD=explode("/", $task[2],3);
-			$user = $task[0];
+			$task = explode("::;;::", $ligne, 6);
+			$dateF=explode("/", $task[4],3);
+			$dateD=explode("/", $task[3],3);
+			$user = $task[1];
 			
 			if((strcmp($_SESSION['id'], "david") == 0) || (strcmp($user, $_SESSION['id']) == 0))
 			{
@@ -299,9 +308,9 @@
 		$fp=ouvertureFichier("task.txt");
 		$ligne=fgets($fp);
 		while(!feof($fp)){
-			$task = explode("::;;::", $ligne, 5);
-			$dateD=explode("/", $task[2],3);
-			$user = $task[0];
+			$task = explode("::;;::", $ligne, 6);
+			$dateD=explode("/", $task[3],3);
+			$user = $task[1];
 			
 			if((strcmp($_SESSION['id'], "david") == 0) || (strcmp($user, $_SESSION['id']) == 0))
 			{
@@ -318,13 +327,39 @@
 		fclose($fp);
 	}
 	
-	function suppressionTask()
+	function suppressionTask($id)
+	{		
+		$lines=file("task.txt");
+		$tableau=array();
+		foreach ($lines as $value){
+			$task = explode("::;;::", $value, 6);
+			$tableau[$task[0]] = $value;
+		}
+		$fp=fopen("task.txt", "w+");
+		
+ 		foreach ($tableau as $task => $ligne) {
+			if($task != $id)
+				fwrite($fp, $ligne);
+		}
+		fclose($fp);
+	
+		header("Location:accueil.php");
+	}
+	
+	
+	/*
+	 * fonction raffraichir
+	 * supprime les taches sur lesquelles l'utilisateur à les droits et qui ont plus d'un mois
+	 * 
+	 * pour l'instant ne marche pas
+	*/
+	function suppressionTaskMois()
 	{
 		$lines=file("task.txt");
 		$tableau=array();
 		foreach ($lines as $value){
-			$task = explode("::;;::", $value, 5);
-			$dateF=explode("/", $task[3],3);
+			$task = explode("::;;::", $value, 6);
+			$dateF=explode("/", $task[4],3);
 			$dateTask=$dateF[2].$dateF[1].$dateF[0];
 			$tableau[$dateTask] = $value;
 		}
@@ -334,14 +369,52 @@
 		$fp=fopen("task.txt", "w+");
 		
  		foreach ($tableau as $dateTask => $ligne) {
-			if ((strcmp($_SESSION['id'], "david") == 0) || (strcmp($_SESSION['id'], $task[0]) ==0)){
-				if($dateTask > $date){
+			if (((strcmp($_SESSION['id'], "david") == 0) && ($dateTask > $date)) || (strcmp($_SESSION['id'], $task[1]) !=0) || ( (strcmp($_SESSION['id'], $task[1]) ==0) && ($dateTask > $date))){
 					fwrite($fp, $ligne);
-				}
-			}
+			}			
 		}
 	fclose($fp);
 	
 	header("Location:accueil.php");
+	}
+	
+	function inscription()
+	{
+		if(strcmp($_SESSION['id'], "david") != 0){
+			header("Location:accueil.php");
+		}
+		
+		if (isset($_POST['newMDP']) AND isset($_POST['newMDPbis']) AND isset($_POST['newID']))
+		{
+			// Si oui on récupère ces variables, en hachant le mot de passe
+			if(strcmp($_POST['newMDP'], $_POST['newMDPbis'])==0){
+				$pass=$_POST['newID'].$_POST['newMDP'];
+			    $mdp=hash('sha512', $pass);
+			    $id=$_POST['newID'];
+			    $inser=$id . " " . $mdp . "\n";			    
+			    $fp=fopen("log.txt", "a+");
+			    
+			    $stop=0;
+			    $lines=file("log.txt");
+			    foreach ($lines as $value){
+					$usr = explode(" ", $value, 2);
+					if(strcmp($usr[0], $id) == 0){
+						$stop=1;
+					}
+				}
+				if($stop==0){
+					fwrite($fp, $inser);
+					echo "Gazier crée";
+				}else{
+					echo "Ce nom d'utilisateur est déjà enregistré";
+				}
+			}else{
+				echo "Mots de passes differents";
+			}
+		}
+		else
+		{
+			echo "Veuillez renseigner les champs";
+		}
 	}
 ?>

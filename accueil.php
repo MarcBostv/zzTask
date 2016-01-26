@@ -15,9 +15,15 @@
 		setcookie('lang', $_SESSION['lang']);
 	}
 	
-  	if(isset($_GET['action']) && $_GET['action'] == 'supr')
+  	if(isset($_GET['action']) && $_GET['action'] == 'supr' && isset($_GET['value']))
 	{
-		suppressionTask();
+		suppressionTask($_GET['value']);
+		return;
+	}
+	
+  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
+	{
+		suppressionTaskMois();
 		return;
 	}
 	
