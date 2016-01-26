@@ -15,9 +15,18 @@
 		setcookie('lang', $_SESSION['lang']);
 	}
 	
-  	if(isset($_GET['action']) && $_GET['action'] == 'supr')
+  	if(isset($_GET['action']) && $_GET['action'] == 'supr' && isset($_GET['value']))
 	{
-		suppressionTask();
+		if((strcmp($_SESSION['id'],"david") == 0) || (strcmp($_SESSION['id'], $_GET['user']) == 0))
+			suppressionTask($_GET['value']);
+		else
+			echo("Vous n'etes pas autorise a supprimer cette tache (petit coquin)");
+		return;
+	}
+	
+  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
+	{
+		suppressionTaskMois();
 		return;
 	}
 	
