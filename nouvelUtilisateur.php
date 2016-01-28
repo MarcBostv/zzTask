@@ -17,12 +17,11 @@
 	{
 		$_SESSION['lang']=$_GET['lang'];
 		setcookie('lang', $_SESSION['lang']);
-	}
+	}	
 	
 	if(isset($_POST['newID']) && isset($_POST['newMDP']))
 	{
 		inscription($_SESSION['id'], $_POST['newID'], $_POST['newMDP'], $_POST['newMDPbis']);
-		return;
 	}
 	
 	include_once controleLang();

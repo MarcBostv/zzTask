@@ -7,13 +7,13 @@
 	if(!isset($_SESSION['id'])){
 		header("Location:accueil.php");
 	}
-	
+
 	if(isset($_GET['lang']))
 	{
 		$_SESSION['lang']=$_GET['lang'];
 		setcookie('lang', $_SESSION['lang']);
 	}
-	
+
 	if(isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description'])  && isset($_POST['val0'])  && isset($_POST['val1']))
 	{
 		$task[0]=$_POST['val0'];
@@ -21,7 +21,7 @@
 		suppressionTask($task[0],0);
 		creationTask($task, $_POST['nomTask'], $_POST['debut'], $_POST['fin'], $_POST['description']);
 	}
-	
+
 	if(!(isset($_GET['action'])) || !(isset($_GET['value'])))
 	{
 		header("Location:accueil.php");
@@ -79,3 +79,4 @@
 		</form>
 	</body>
 </html>	
+

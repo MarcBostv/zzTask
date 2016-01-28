@@ -23,7 +23,7 @@
 			echo("Vous n'etes pas autorise a supprimer cette tache (petit coquin)");
 		return;
 	}
-	
+
 	include_once controleLang();
 	
 	$selected="accueil";
