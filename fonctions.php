@@ -5,7 +5,7 @@
         session_start(); 
     } 
     
-	function controleSession($_SESSION['connect']) //ne pas tester
+	function controleSession() //ne pas tester
 	{
 		if($_SESSION['connect']!=1)
 		{
