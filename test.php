@@ -35,7 +35,7 @@ class Login extends PHPUnit_Framework_TestCase
 		$val2=connexion("david", "mauvaismdp");
 		$this->assertFalse($val2, true);
 	}
-	
+/*	
 	public function testTaskPassees() {
 		$val=taskPassees("david");
 		$this->assertEquals($val, true);
@@ -56,7 +56,7 @@ class Login extends PHPUnit_Framework_TestCase
 		$val2=taskPresentes("userbidon");
 		$this->assertFalse($val2, true);
 	}
-	
+*/	
 	public function testInscription() {
 		$val=inscription("david", "test1", "motdepasse", "motdepasse");
 		$this->assertEquals($val, true);

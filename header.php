@@ -21,6 +21,7 @@
 						if(strcmp($_SESSION['id'], "david") == 0){
 					?>
 							<li <?php if ($selected == "nouvelUtilisateur") echo 'class="active"' ?>><a href="nouvelUtilisateur.php"><?php echo $lang['CREATE_USER']; ?></a></li>
+							<li <?php if ($selected == "nouveauMdp") echo 'class="active"' ?>><a href="nouveauMdp.php"><?php echo $lang['EDIT_MDP']; ?></a></li>
 					<?php
 						}
 					?>
