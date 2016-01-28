@@ -21,7 +21,7 @@
 	
 	if(isset($_POST['newID']) && isset($_POST['newMDP']))
 	{
-		inscription($_SESSION['id'], $_POST['newID'], $_POST['newMDP'], $_POST['newMDPbis']);
+		inscription($_POST['newID'], $_POST['newMDP'], $_POST['newMDPbis']);
 	}
 	
 	include_once controleLang();

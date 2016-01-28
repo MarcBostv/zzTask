@@ -84,7 +84,7 @@
 			$test=$id . " " . $mdp . "\n";
 		
 		// On essaie d'ouvrir le fichier log.txt
-		if(!$monfichier = fopen("log.txt", "r"))
+		if(!$monfichier = fopen("fichiers/log.txt", "r"))
 		{
 			// Si on y arrive pas, message d'erreur
 			echo("erreur ouverture fichier");
@@ -204,7 +204,7 @@
 	
 	function insertionFichier($fin, $champs)
 	{
-		$lines=file("task.txt");
+		$lines=file("fichiers/task.txt");
 		$i=0;
 		$tableau=array();
 		foreach ($lines as $value){
@@ -216,7 +216,7 @@
 		}
 		$tableau[$fin] = $champs;
 		ksort($tableau);
-		$fp=ouvertureFichier("task.txt");
+		$fp=ouvertureFichier("fichiers/task.txt");
 		
  		foreach ($tableau as $k => $v) {
 				fwrite($fp, $v);
@@ -260,7 +260,7 @@
 		$var=false;
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
-		$fp=ouvertureFichier("task.txt");
+		$fp=ouvertureFichier("fichiers/task.txt");
 		$ligne=fgets($fp);
 		while(!feof($fp)){
 			$task = explode("::;;::", $ligne, 6);
@@ -289,7 +289,7 @@
 		$var=false;
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
-		$fp=ouvertureFichier("task.txt");
+		$fp=ouvertureFichier("fichiers/task.txt");
 		$ligne=fgets($fp);
 		while(!feof($fp)){
 			$task = explode("::;;::", $ligne, 6);
@@ -320,7 +320,7 @@
 		$var=false;
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
-		$fp=ouvertureFichier("task.txt");
+		$fp=ouvertureFichier("fichiers/task.txt");
 		$ligne=fgets($fp);
 		while(!feof($fp)){
 			$task = explode("::;;::", $ligne, 6);
@@ -346,13 +346,13 @@
 	
 	function suppressionTask($id, $oui)
 	{		
-		$lines=file("task.txt");
+		$lines=file("fichiers/task.txt");
 		$tableau=array();
 		foreach ($lines as $value){
 			$task = explode("::;;::", $value, 6);
 			$tableau[$task[0]] = $value;
 		}
-		$fp=fopen("task.txt", "w+");
+		$fp=fopen("fichiers/task.txt", "w+");
 		
  		foreach ($tableau as $task => $ligne) {
 			if($task != $id)
@@ -365,25 +365,24 @@
 		}
 	}
 		
-	function inscription($id, $nid, $nmdp, $nmdpbis)
+	function inscription($id, $nmdp, $nmdpbis)
 	{
 		$var=false;
-		if(strcmp($id, "david") != 0){
+		if(strcmp($_SESSION['id'], "david") != 0){
 			header("Location:accueil.php");
 		}
 		
-		if (isset($nmdp) AND isset($nmdpbis) AND isset($nid))
+		if (isset($nmdp) AND isset($nmdpbis) AND isset($id))
 		{
 			// Si oui on récupère ces variables, en hachant le mot de passe
 			if(strcmp($nmdp, $nmdpbis)==0){
 				$pass=$id.$nmdp;
 			    $mdp=hash('sha512', $pass);
-			    $id=$id;
 			    $inser=$id . " " . $mdp . "\n";			    
-			    $fp=fopen("log.txt", "a+");
+			    $fp=fopen("fichiers/log.txt", "a+");
 			    
 			    $stop=0;
-			    $lines=file("log.txt");
+			    $lines=file("fichiers/log.txt");
 			    foreach ($lines as $value){
 					$usr = explode(" ", $value, 2);
 					if(strcmp($usr[0], $id) == 0){
@@ -412,7 +411,7 @@
 	function modifierTask($id)
 	{
 		$i=-1;
-		$lines=file("task.txt");
+		$lines=file("fichiers/task.txt");
 		$cp=count($lines);	
 		do
 		{
