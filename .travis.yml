@@ -6,7 +6,3 @@ php:
   - '7.0'
   - hhvm
   - nightly
-install:
-        npm install jshint
-script:
-        ant test
