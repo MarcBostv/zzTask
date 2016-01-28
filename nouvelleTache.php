@@ -25,7 +25,7 @@
   
 	if(isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description']))
 	{
-		creationTask();
+		creationTask(-1);
 		return;
 	}
 	

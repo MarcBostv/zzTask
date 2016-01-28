@@ -18,7 +18,7 @@
   	if(isset($_GET['action']) && $_GET['action'] == 'supr' && isset($_GET['value']))
 	{
 		if((strcmp($_SESSION['id'],"david") == 0) || (strcmp($_SESSION['id'], $_GET['user']) == 0))
-			suppressionTask($_GET['value']);
+			suppressionTask($_GET['value'],1);
 		else
 			echo("Vous n'etes pas autorise a supprimer cette tache (petit coquin)");
 		return;

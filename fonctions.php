@@ -131,7 +131,7 @@
 		header("Location:index.php");
 	}
 		
-function creationTask()
+	function creationTask($oui)
 	{
 		//ici on recupere les POST pour une tache ainsi que l'id user, et on la créée dans le .txt 
 			
@@ -162,41 +162,50 @@ function creationTask()
 					if(!$nomTask)
 						echo("Erreur, saisissez un nom de tache");
 						else {
-							if($year>$yearf)
-								echo("Erreur, l'annee de fin est anterieure a l'annee de debut");
-								else {
-									if($year==$yearf && $month>$monthf)
-										echo("Erreur, le mois de fin est anterieur au mois de debut");
-										else {
-											if($month==$monthf && $day>$dayf)
-												echo("Erreur, le jour de fin est anterieur au jour de debut");
-											   else {
-													if($year<date('Y',time()))			
-														echo("Erreur, mauvaise annee saisie");
-														else {
-															if($year==date('Y',time()) && $month<date('m',time()))
-																echo("Erreur, mauvais mois saisi");
-																else {
-																	if($month==date('m',time()) && $day<date('d',time()))
-																		echo("Mauvais jour saisi");
-																		else {
-																			$idTask = rand(0, 1000000);
-																			//on concatene
-																			$champs=$idTask . "::;;::" . $id . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
-																       
-																			//on met en forme AAAAMMJJ
-																			$fin=$yearf.$monthf.$dayf;
-																			//on envoie dans le fichier
-																			insertionFichier($fin, $champs);
-																			header("Location:nouvelleTache.php");
-																		}	
-																}
-														}
-												}
+							if($oui<0){
+								if($year>$yearf)
+									echo("Erreur, l'annee de fin est anterieure a l'annee de debut");
+									else {
+										if($year==$yearf && $month>$monthf)
+											echo("Erreur, le mois de fin est anterieur au mois de debut");
+											else {
+												if($month==$monthf && $day>$dayf)
+													echo("Erreur, le jour de fin est anterieur au jour de debut");
+												   else {
+														if($year<date('Y',time()))			
+															echo("Erreur, mauvaise annee saisie");
+															else {
+																if($year==date('Y',time()) && $month<date('m',time()))
+																	echo("Erreur, mauvais mois saisi");
+																	else {
+																		if($month==date('m',time()) && $day<date('d',time()))
+																			echo("Mauvais jour saisi");
+																			else {
+																				$idTask = rand(0, 1000000);
+																				//on concatene
+																				$champs=$idTask . "::;;::" . $id . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
+																	       
+																				//on met en forme AAAAMMJJ
+																				$fin=$yearf.$monthf.$dayf;
+																				//on envoie dans le fichier
+																				insertionFichier($fin, $champs);
+																				header("Location:nouvelleTache.php");
+																			}	
+																	}
+															}
+													}
+											}
 										}
-									}
+								}else{
+									$champs=$oui[0] . "::;;::" . $oui[1] . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
+									//on met en forme AAAAMMJJ
+									$fin=$yearf.$monthf.$dayf;
+									//on envoie dans le fichier
+									insertionFichier($fin, $champs);
+									header('Location:modifierTache.php?action=modif&value='.$oui);
 								}
 							}
+						}
 		}
 		else
 		{
@@ -232,6 +241,16 @@ function creationTask()
   		include $file;?>
 		<div class="panel panel-primary">
 			<a href="accueil.php?action=supr&value=<?php echo $task[0] ?>&user=<?php echo $task[1] ?>" class="btn btn-primary pull-right"><?php echo $lang['SUPR'];?></a>
+		<!-- Debut pop-up -->
+			<a class="btn btn-large btn-info pull-right" onclick="popup('modifierTache.php?action=modif&value=<?php echo $task[0] ?>')"><?php echo $lang['MODIF'];?></a>
+			
+			<script LANGUAGE="JavaScript"> 
+				function popup(tmp)
+				{ 
+					window.open(tmp,'popup','width=600,height=300,toolbar=false,scrollbars=false'); 
+				} 
+			</script>
+		<!-- Fin pop-up -->
 			<div class="panel-heading"><?php echo $task[2]?></div>
 			<div class="panel-body">
 				<p>					
@@ -327,7 +346,7 @@ function creationTask()
 		fclose($fp);
 	}
 	
-	function suppressionTask($id)
+	function suppressionTask($id, $oui)
 	{		
 		$lines=file("task.txt");
 		$tableau=array();
@@ -343,7 +362,9 @@ function creationTask()
 		}
 		fclose($fp);
 	
-		header("Location:accueil.php");
+		if($oui==1){
+			header("Location:accueil.php");
+		}
 	}
 	
 	
@@ -352,7 +373,6 @@ function creationTask()
 	 * supprime les taches sur lesquelles l'utilisateur à les droits et qui ont plus d'un mois
 	 * 
 	 * pour l'instant ne marche pas
-	*/
 	function suppressionTaskMois()
 	{
 		$lines=file("task.txt");
@@ -377,6 +397,7 @@ function creationTask()
 	
 	header("Location:accueil.php");
 	}
+	*/
 	
 	function inscription()
 	{
@@ -417,4 +438,25 @@ function creationTask()
 			echo "Veuillez renseigner les champs";
 		}
 	}
+	
+	function modifierTask($id)
+	{
+		$i=-1;
+		$lines=file("task.txt");
+		$cp=count($lines);	
+		do
+		{
+			$cp--;
+			$i++;
+			$task = explode("::;;::", $lines[$i], 6);	
+		}while($cp >= 0 && (($task[0] != $id)));
+				
+		if((strcmp($_SESSION['id'], "david") != 0) && (strcmp($_SESSION['id'], $task[1]) != 0))
+		{
+			echo ("modification non autorisée");
+		}else{
+			return $task;		
+		}
+	}
+
 ?>

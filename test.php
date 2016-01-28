@@ -22,6 +22,14 @@ class Login extends PHPUnit_Framework_TestCase
 		$this->assertEquals('langEn.php', $r4);
 	}
 	
+	public function testOuvertureFichier(){
+		$r1=ouvertureFichier();
+		$r2=ouvertureFichier("nexistePas");
+		$r3=ouvertureFichier("task.txt");
+//		$this->assertFalse
+//		$this->assertEquals('langFr.php', $r2);
+	}
+
 	//test useless
 	public function testTime() {
 		date_default_timezone_set('Europe/Paris');
