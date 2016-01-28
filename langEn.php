@@ -37,5 +37,8 @@ $lang['T_CONTENT'] = 'Content/Description';
 $lang['SUPR'] = 'Delete';
 $lang['RAFFR'] = 'Free';
 $lang['USER_FIELD'] = 'New username (without space)';
-$lang['SIGNIN'] = 'Sign in';
+$lang['SIGNIN'] = 'Sign up';
+$lang['MODIF'] = 'Update';
+$lang['CLOSE'] = 'Close';
+$lang['UPDATING_TASK'] = 'Updating a task';
 ?>

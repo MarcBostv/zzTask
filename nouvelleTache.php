@@ -9,23 +9,19 @@
 		deconnexion();
 		return;
 	}
+	
 	if(isset($_GET['lang']))
 	{
 		$_SESSION['lang']=$_GET['lang'];
 		setcookie('lang', $_SESSION['lang']);
 	}
 	
-  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
-	{
-		suppressionTaskMois();
-		return;
-	}
-	
 	include_once controleLang();
   
 	if(isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description']))
 	{
-		creationTask();
+		$task[0]=-1;
+		creationTask($task, $_POST['nomTask'], $_POST['debut'], $_POST['fin'], $_POST['description']);
 		return;
 	}
 	
@@ -73,6 +69,4 @@
 			</div>
 		</form>
 	</body>
-</html>			
-
-
+</html>	

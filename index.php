@@ -4,8 +4,10 @@
 	
 	if(isset($_POST['id']) && isset($_POST['mdp']))
 	{
-		connexion();
-		return;
+		if(connexion($_POST['id'], $_POST['mdp']))
+			header("Location:accueil.php");
+		else
+			header("Location:accueil.php?action=deco");
 	}
 ?>
 

@@ -1,7 +1,7 @@
 <!-- > Tout d'abord on vérifie que nous sommes bien connectés <-->
 <?php
 	require('fonctions.php');
-	controleSession();
+	controleSession($_SESSION['connect']);
 	
 	if(isset($_GET['action']) && $_GET['action'] == 'deco')
 	{
@@ -18,15 +18,9 @@
   	if(isset($_GET['action']) && $_GET['action'] == 'supr' && isset($_GET['value']))
 	{
 		if((strcmp($_SESSION['id'],"david") == 0) || (strcmp($_SESSION['id'], $_GET['user']) == 0))
-			suppressionTask($_GET['value']);
+			suppressionTask($_GET['value'],1);
 		else
 			echo("Vous n'etes pas autorise a supprimer cette tache (petit coquin)");
-		return;
-	}
-	
-  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
-	{
-		suppressionTaskMois();
 		return;
 	}
 	
@@ -59,7 +53,7 @@
 							<h3><?php echo $lang['T_PAST']; ?></h3>
 						</div>
 						
-						<?php taskPassees();?>
+						<?php taskPassees($_SESSION['id']);?>
 						
 					</div>
 				</div>
@@ -73,7 +67,7 @@
 							<h3><?php echo $lang['T_PRES']; ?></h3>
 						</div>
 						
-						<?php taskPresentes();?>
+						<?php taskPresentes($_SESSION['id']);?>
 
 					</div>
 				</div>
@@ -87,7 +81,7 @@
 							<h3><?php echo $lang['T_FUTURE']; ?></h3>
 						</div>
 						
-						<?php taskFutures();?>
+						<?php taskFutures($_SESSION['id']);?>
 						
 					</div>
 				</div>

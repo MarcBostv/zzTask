@@ -1,7 +1,7 @@
 <!-- > Tout d'abord on vérifie que nous sommes bien connectés <-->
 <?php
 	require('fonctions.php');
-	controleSession();
+	controleSession($_SESSION['connect']);
 	
 	if(strcmp($_SESSION['id'], "david") != 0){
 		header("Location:accueil.php");
@@ -19,15 +19,9 @@
 		setcookie('lang', $_SESSION['lang']);
 	}
 	
-  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
+	if(isset($_POST['newID']) && isset($_POST['newMDP']))
 	{
-		suppressionTaskMois();
-		return;
-	}
-	
-		if(isset($_POST['newID']) && isset($_POST['newMDP']))
-	{
-		inscription();
+		inscription($_SESSION['id'], $_POST['newID'], $_POST['newMDP'], $_POST['newMDPbis']);
 		return;
 	}
 	

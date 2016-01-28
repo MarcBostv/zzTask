@@ -1,4 +1,3 @@
-
 <?php
 /* 
 ------------------
@@ -39,4 +38,7 @@ $lang['SUPR'] = 'Supprimer';
 $lang['RAFFR'] = 'Liberer';
 $lang['USER_FIELD'] = 'Nom du nouvel utilisateur (sans espace)';
 $lang['SIGNIN'] = 'Inscription';
+$lang['MODIF'] = 'Modifier';
+$lang['CLOSE'] = 'Fermer';
+$lang['UPDATING_TASK'] = 'Modification d\'une tache';
 ?>

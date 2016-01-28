@@ -5,9 +5,9 @@
         session_start(); 
     } 
     
-	function controleSession() //ne pas tester
+	function controleSession($connect) //ne pas tester
 	{
-		if($_SESSION['connect']!=1)
+		if($connect!=1)
 		{
 			// Si ce n'est pas le cas, on retourne à l'index
 			header("Location:index.php");
@@ -59,18 +59,19 @@
 		return $fp;
 	}
 	
-	function connexion()
+	function connexion($identifiant, $motdepasse)
 	{
-				// On initialise connect à 0
+		$var=false;
+		// On initialise connect à 0
 		$_SESSION['connect']=0; 
 		
 		// On vérifie que l'utilisateur a bien tapé le login et le mot de passe
-		if (isset($_POST['mdp']) AND isset($_POST['id']))
+		if (isset($motdepasse) AND isset($identifiant))
 		{
 				// Si oui on récupère ces variables, en hachant le mot de passe
-				$pass=$_POST['id'].$_POST['mdp'];
+				$pass=$identifiant.$motdepasse;
 		        $mdp=hash('sha512', $pass);
-		        $id=$_POST['id'];
+		        $id=$identifiant;
 		}
 		else
 		{
@@ -97,6 +98,7 @@
 				// Si une ligne est équivalente à notre variable "login passwordHaché"
 				if ($test==$ligne)
 				{
+					$var=true;
 					// Alors connect passe à 1, et on stocke l'id de l'utilisateur
 					$_SESSION['connect']=1;
 					$_SESSION['id']=$id;
@@ -108,17 +110,7 @@
 			fclose($monfichier);
 		}
 		
-		// On teste si on est connecté
-		if ($_SESSION['connect'] == 1)
-		{
-			// Si oui, on avance dans le site en se rendant sur accueil.php
-			header("Location:accueil.php");
-		}
-		else
-		{
-			// Sinon on supprime les éventuelles données stockées dans la variable de session
-			header("Location:accueil.php?action=deco");
-		}
+		return $var;
 	}
 		
 	function deconnexion()
@@ -131,22 +123,18 @@
 		header("Location:index.php");
 	}
 		
-function creationTask()
-	{
-		//ici on recupere les POST pour une tache ainsi que l'id user, et on la créée dans le .txt 
-			
+	function creationTask($oui, $nmTsk, $dbt, $f, $desc)
+	{			
 		// On vérifie que l'utilisateur a bien saisi tous les champs
-		if (isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']))
+		if (isset($nmTsk) && isset($dbt) && isset($f) && isset($desc))
 		{
 			   // Si oui on récupère ces variables
 			   $id=$_SESSION['id'];
-		       $nmTsk=$_POST['nomTask'];
-		       $dbt=$_POST['debut'];
-		       $f=$_POST['fin'];
-		       $desc=$_POST['description'];
+			   		       
+		       $nomTask=str_replace("::;;::","_",$nmTsk);		       
+		       $desc1=str_replace("::;;::","_",$desc);
+		       $description=str_replace("\n","",$desc1);
 		       
-		       $nomTask=str_replace("::;;::","_",$nmTsk);
-		       $description=str_replace("::;;::","_",$desc);
 		       $pattern="[^0-9]";
 		       $fin=preg_replace($pattern," / / ",$f);
 		       $debut=preg_replace($pattern," / / ",$dbt);
@@ -171,32 +159,42 @@ function creationTask()
 											if($month==$monthf && $day>$dayf)
 												echo("Erreur, le jour de fin est anterieur au jour de debut");
 											   else {
-													if($year<date('Y',time()))			
-														echo("Erreur, mauvaise annee saisie");
-														else {
-															if($year==date('Y',time()) && $month<date('m',time()))
-																echo("Erreur, mauvais mois saisi");
-																else {
-																	if($month==date('m',time()) && $day<date('d',time()))
-																		echo("Mauvais jour saisi");
-																		else {
-																			$idTask = rand(0, 1000000);
-																			//on concatene
-																			$champs=$idTask . "::;;::" . $id . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
-																       
-																			//on met en forme AAAAMMJJ
-																			$fin=$yearf.$monthf.$dayf;
-																			//on envoie dans le fichier
-																			insertionFichier($fin, $champs);
-																			header("Location:nouvelleTache.php");
-																		}	
-																}
-														}
-												}
+													if($oui[0]<0){
+														if($year<date('Y',time()))			
+															echo("Erreur, mauvaise annee saisie");
+															else {
+																if($year==date('Y',time()) && $month<date('m',time()))
+																	echo("Erreur, mauvais mois saisi");
+																	else {
+																		if($month==date('m',time()) && $day<date('d',time()))
+																			echo("Mauvais jour saisi");
+																			else {
+																				$idTask = rand(0, 1000000);
+																				//on concatene
+																				$champs=$idTask . "::;;::" . $id . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
+																	       
+																				//on met en forme AAAAMMJJ
+																				$fin=$yearf.$monthf.$dayf;
+																				//on envoie dans le fichier
+																				insertionFichier($fin, $champs);
+																				header("Location:nouvelleTache.php");
+																			}	
+																	}
+															}
+													}else{
+														
+														$champs=$oui[0] . "::;;::" . $oui[1] . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
+														//on met en forme AAAAMMJJ
+														$fin=$yearf.$monthf.$dayf;
+														//on envoie dans le fichier
+														insertionFichier($fin, $champs);
+														header('Location:modifierTache.php?action=modif&value='.$oui[0]);
+													}
+													}
+											}
 										}
-									}
-								}
 							}
+						}
 		}
 		else
 		{
@@ -226,17 +224,27 @@ function creationTask()
 	fclose($fp);
 	}
 				
-	function afficherTask($task)
+	function afficherTask($task, $id)
 	{
   		$file=controleLang();
   		include $file;?>
 		<div class="panel panel-primary">
 			<a href="accueil.php?action=supr&value=<?php echo $task[0] ?>&user=<?php echo $task[1] ?>" class="btn btn-primary pull-right"><?php echo $lang['SUPR'];?></a>
+		<!-- Debut pop-up -->
+			<a class="btn btn-large btn-info pull-right" onclick="popup('modifierTache.php?action=modif&value=<?php echo $task[0] ?>')"><?php echo $lang['MODIF'];?></a>
+			
+			<script LANGUAGE="JavaScript"> 
+				function popup(tmp)
+				{ 
+					window.open(tmp,'popup','width=600,height=300,toolbar=false,scrollbars=false'); 
+				} 
+			</script>
+		<!-- Fin pop-up -->
 			<div class="panel-heading"><?php echo $task[2]?></div>
 			<div class="panel-body">
 				<p>					
 					<?php
-						if(strcmp($_SESSION['id'],"david") == 0){
+						if(strcmp($id,"david") == 0){
 							?><b><?php echo $lang['T_USER']; ?> :</b> <?php echo $task[1];
 						}
 					?>
@@ -247,8 +255,9 @@ function creationTask()
 		</div><?php	
 	}
 		
-	function taskPassees()
+	function taskPassees($id)
 	{
+		$var=false;
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
 		$fp=ouvertureFichier("task.txt");
@@ -258,12 +267,13 @@ function creationTask()
 			$user = $task[1];
 			$dateF=explode("/", $task[4],3);
 			
-			if((strcmp($_SESSION['id'], "david") == 0) || (strcmp($user, $_SESSION['id']) == 0))
+			if((strcmp($id, "david") == 0) || (strcmp($user, $id) == 0))
 			{
 				if(($dateAuj[2]>=$dateF[2])){
 					if( ($dateAuj[2]>$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]>=$dateF[1])))){
 						if(($dateAuj[2]>$dateF[2]) || ($dateAuj[1]>$dateF[1]) || (($dateAuj[1]==$dateF[1])&&(($dateAuj[0]>$dateF[0])))){
-							afficherTask($task);
+							$var=true;
+							afficherTask($task, $id);
 						}
 					}
 				}
@@ -271,10 +281,12 @@ function creationTask()
 			$ligne=fgets($fp);
 		}
 		fclose($fp);
+		return $var;
 	}
 	
-	function taskPresentes()
+	function taskPresentes($id)
 	{
+		$var=false;
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
 		$fp=ouvertureFichier("task.txt");
@@ -285,13 +297,14 @@ function creationTask()
 			$dateD=explode("/", $task[3],3);
 			$user = $task[1];
 			
-			if((strcmp($_SESSION['id'], "david") == 0) || (strcmp($user, $_SESSION['id']) == 0))
+			if((strcmp($id, "david") == 0) || (strcmp($user, $id) == 0))
 			{
 				if( ($dateAuj[2]<=$dateF[2])  &&  ($dateAuj[2]>=$dateD[2])){
 					if( (($dateAuj[2]<$dateF[2]) || (($dateAuj[2]==$dateF[2])&&(($dateAuj[1]<=$dateF[1]))))  &&  (($dateAuj[2]>$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]>=$dateD[1]))))){
 						if( (($dateAuj[2]<$dateF[2]) || ($dateAuj[1]<$dateF[1]) || (($dateAuj[1]==$dateF[1])&&(($dateAuj[0]<=$dateF[0]))))
 							&& (($dateAuj[2]>$dateD[2]) || ($dateAuj[1]>$dateD[1]) || (($dateAuj[1]==$dateD[1])&&(($dateAuj[0]>=$dateD[0]))))){
-							afficherTask($task);
+							afficherTask($task, $id);
+							$var=true;
 						}
 					}
 				}
@@ -299,10 +312,12 @@ function creationTask()
 			$ligne=fgets($fp);
 		}
 		fclose($fp);
+		return $var;
 	}
 	
-	function taskFutures()
+	function taskFutures($id)
 	{
+		$var=false;
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
 		$fp=ouvertureFichier("task.txt");
@@ -312,12 +327,13 @@ function creationTask()
 			$dateD=explode("/", $task[3],3);
 			$user = $task[1];
 			
-			if((strcmp($_SESSION['id'], "david") == 0) || (strcmp($user, $_SESSION['id']) == 0))
+			if((strcmp($id, "david") == 0) || (strcmp($user, $id) == 0))
 			{
 				if(($dateAuj[2]<=$dateD[2])){
 					if( ($dateAuj[2]<$dateD[2]) || (($dateAuj[2]==$dateD[2])&&(($dateAuj[1]<=$dateD[1])))){
 						if(($dateAuj[2]<$dateD[2]) || ($dateAuj[1]<$dateD[1]) || (($dateAuj[1]==$dateD[1])&&(($dateAuj[0]<$dateD[0])))){
-							afficherTask($task);
+							afficherTask($task, $id);;
+							$var=true;
 						}
 					}
 				}
@@ -325,9 +341,10 @@ function creationTask()
 			$ligne=fgets($fp);
 		}
 		fclose($fp);
+		return $var;
 	}
 	
-	function suppressionTask($id)
+	function suppressionTask($id, $oui)
 	{		
 		$lines=file("task.txt");
 		$tableau=array();
@@ -343,54 +360,25 @@ function creationTask()
 		}
 		fclose($fp);
 	
-		header("Location:accueil.php");
+		if($oui==1){
+			header("Location:accueil.php");
+		}
 	}
 	
-	
-	/*
-	 * fonction raffraichir
-	 * supprime les taches sur lesquelles l'utilisateur à les droits et qui ont plus d'un mois
-	 * 
-	 * pour l'instant ne marche pas
-	*/
-	function suppressionTaskMois()
+	function inscription($id, $nid, $nmdp, $nmdpbis)
 	{
-		$lines=file("task.txt");
-		$tableau=array();
-		foreach ($lines as $value){
-			$task = explode("::;;::", $value, 6);
-			$dateF=explode("/", $task[4],3);
-			$dateTask=$dateF[2].$dateF[1].$dateF[0];
-			$tableau[$dateTask] = $value;
-		}
-		date_default_timezone_set('Europe/Paris');
-		$date = date('Ymd', strtotime('-1 month'));
-		
-		$fp=fopen("task.txt", "w+");
-		
- 		foreach ($tableau as $dateTask => $ligne) {
-			if (((strcmp($_SESSION['id'], "david") == 0) && ($dateTask > $date)) || (strcmp($_SESSION['id'], $task[1]) !=0) || ( (strcmp($_SESSION['id'], $task[1]) ==0) && ($dateTask > $date))){
-					fwrite($fp, $ligne);
-			}			
-		}
-	fclose($fp);
-	
-	header("Location:accueil.php");
-	}
-	
-	function inscription()
-	{
-		if(strcmp($_SESSION['id'], "david") != 0){
+		$var=false;
+		if(strcmp($id, "david") != 0){
 			header("Location:accueil.php");
 		}
 		
-		if (isset($_POST['newMDP']) AND isset($_POST['newMDPbis']) AND isset($_POST['newID']))
+		if (isset($nmdp) AND isset($nmdpbis) AND isset($nid))
 		{
 			// Si oui on récupère ces variables, en hachant le mot de passe
-			if(strcmp($_POST['newMDP'], $_POST['newMDPbis'])==0){
-				$pass=$_POST['newID'].$_POST['newMDP'];
+			if(strcmp($nmdp, $nmdpbis)==0){
+				$pass=$id.$nmdp;
 			    $mdp=hash('sha512', $pass);
-			    $id=$_POST['newID'];
+			    $id=$id;
 			    $inser=$id . " " . $mdp . "\n";			    
 			    $fp=fopen("log.txt", "a+");
 			    
@@ -405,8 +393,10 @@ function creationTask()
 				if($stop==0){
 					fwrite($fp, $inser);
 					echo "Gazier crée";
+					$var=true;
 				}else{
 					echo "Ce nom d'utilisateur est déjà enregistré";
+					$var=1;
 				}
 			}else{
 				echo "Mots de passes differents";
@@ -416,5 +406,27 @@ function creationTask()
 		{
 			echo "Veuillez renseigner les champs";
 		}
+		return $var;
 	}
+	
+	function modifierTask($id)
+	{
+		$i=-1;
+		$lines=file("task.txt");
+		$cp=count($lines);	
+		do
+		{
+			$cp--;
+			$i++;
+			$task = explode("::;;::", $lines[$i], 6);	
+		}while($cp >= 0 && (($task[0] != $id)));
+				
+		if((strcmp($_SESSION['id'], "david") != 0) && (strcmp($_SESSION['id'], $task[1]) != 0))
+		{
+			echo ("modification non autorisée");
+		}else{
+			return $task;		
+		}
+	}
+
 ?>
