@@ -1,7 +1,7 @@
 <!-- > Tout d'abord on vérifie que nous sommes bien connectés <-->
 <?php
 	require('fonctions.php');
-	controleSession($_SESSION['connect']);
+	controleSession();
 	
 	if(strcmp($_SESSION['id'], "david") != 0){
 		header("Location:accueil.php");

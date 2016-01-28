@@ -5,9 +5,9 @@
         session_start(); 
     } 
     
-	function controleSession($connect) //ne pas tester
+	function controleSession($_SESSION['connect']) //ne pas tester
 	{
-		if($connect!=1)
+		if($_SESSION['connect']!=1)
 		{
 			// Si ce n'est pas le cas, on retourne à l'index
 			header("Location:index.php");

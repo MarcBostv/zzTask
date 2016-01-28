@@ -1,7 +1,7 @@
 <!-- > Tout d'abord on vérifie que nous sommes bien connectés <-->
 <?php
 	require('fonctions.php');
-	controleSession($_SESSION['connect']);
+	controleSession();
 	
 	if(isset($_GET['action']) && $_GET['action'] == 'deco')
 	{
