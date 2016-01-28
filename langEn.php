@@ -35,10 +35,7 @@ $lang['T_FROM'] = 'Task from ';
 $lang['T_TO'] = ' to ';
 $lang['T_CONTENT'] = 'Content/Description';
 $lang['SUPR'] = 'Delete';
-<<<<<<< HEAD
 $lang['RAFFR'] = 'Free';
-=======
->>>>>>> c9893406b35b133d1c4ead94d70868f45d0f0dff
 $lang['USER_FIELD'] = 'New username (without space)';
 $lang['SIGNIN'] = 'Sign in';
 ?>
