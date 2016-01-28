@@ -15,17 +15,12 @@
 		setcookie('lang', $_SESSION['lang']);
 	}
 	
-  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
-	{
-		suppressionTaskMois();
-		return;
-	}
-	
 	include_once controleLang();
   
 	if(isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description']))
 	{
-		creationTask(-1);
+		$task[0]=-1;
+		creationTask($task);
 		return;
 	}
 	

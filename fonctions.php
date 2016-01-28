@@ -132,11 +132,9 @@
 	}
 		
 	function creationTask($oui)
-	{
-		//ici on recupere les POST pour une tache ainsi que l'id user, et on la créée dans le .txt 
-			
+	{			
 		// On vérifie que l'utilisateur a bien saisi tous les champs
-		if (isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']))
+		if (isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description']))
 		{
 			   // Si oui on récupère ces variables
 			   $id=$_SESSION['id'];
@@ -146,7 +144,11 @@
 		       $desc=$_POST['description'];
 		       
 		       $nomTask=str_replace("::;;::","_",$nmTsk);
-		       $description=str_replace("::;;::","_",$desc);
+		       //$description=str_replace("::;;::","_",$desc);
+		       
+		       $desc1=str_replace("::;;::","_",$desc);
+		       $description=str_replace("\n","",$desc1);
+		       
 		       $pattern="[^0-9]";
 		       $fin=preg_replace($pattern," / / ",$f);
 		       $debut=preg_replace($pattern," / / ",$dbt);
@@ -162,16 +164,16 @@
 					if(!$nomTask)
 						echo("Erreur, saisissez un nom de tache");
 						else {
-							if($oui<0){
-								if($year>$yearf)
-									echo("Erreur, l'annee de fin est anterieure a l'annee de debut");
-									else {
-										if($year==$yearf && $month>$monthf)
-											echo("Erreur, le mois de fin est anterieur au mois de debut");
-											else {
-												if($month==$monthf && $day>$dayf)
-													echo("Erreur, le jour de fin est anterieur au jour de debut");
-												   else {
+							if($year>$yearf)
+								echo("Erreur, l'annee de fin est anterieure a l'annee de debut");
+								else {
+									if($year==$yearf && $month>$monthf)
+										echo("Erreur, le mois de fin est anterieur au mois de debut");
+										else {
+											if($month==$monthf && $day>$dayf)
+												echo("Erreur, le jour de fin est anterieur au jour de debut");
+											   else {
+													if($oui[0]<0){
 														if($year<date('Y',time()))			
 															echo("Erreur, mauvaise annee saisie");
 															else {
@@ -193,17 +195,18 @@
 																			}	
 																	}
 															}
+													}else{
+														
+														$champs=$oui[0] . "::;;::" . $oui[1] . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
+														//on met en forme AAAAMMJJ
+														$fin=$yearf.$monthf.$dayf;
+														//on envoie dans le fichier
+														insertionFichier($fin, $champs);
+														header('Location:modifierTache.php?action=modif&value='.$oui[0]);
+													}
 													}
 											}
 										}
-								}else{
-									$champs=$oui[0] . "::;;::" . $oui[1] . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
-									//on met en forme AAAAMMJJ
-									$fin=$yearf.$monthf.$dayf;
-									//on envoie dans le fichier
-									insertionFichier($fin, $champs);
-									header('Location:modifierTache.php?action=modif&value='.$oui);
-								}
 							}
 						}
 		}
@@ -366,38 +369,6 @@
 			header("Location:accueil.php");
 		}
 	}
-	
-	
-	/*
-	 * fonction raffraichir
-	 * supprime les taches sur lesquelles l'utilisateur à les droits et qui ont plus d'un mois
-	 * 
-	 * pour l'instant ne marche pas
-	function suppressionTaskMois()
-	{
-		$lines=file("task.txt");
-		$tableau=array();
-		foreach ($lines as $value){
-			$task = explode("::;;::", $value, 6);
-			$dateF=explode("/", $task[4],3);
-			$dateTask=$dateF[2].$dateF[1].$dateF[0];
-			$tableau[$dateTask] = $value;
-		}
-		date_default_timezone_set('Europe/Paris');
-		$date = date('Ymd', strtotime('-1 month'));
-		
-		$fp=fopen("task.txt", "w+");
-		
- 		foreach ($tableau as $dateTask => $ligne) {
-			if (((strcmp($_SESSION['id'], "david") == 0) && ($dateTask > $date)) || (strcmp($_SESSION['id'], $task[1]) !=0) || ( (strcmp($_SESSION['id'], $task[1]) ==0) && ($dateTask > $date))){
-					fwrite($fp, $ligne);
-			}			
-		}
-	fclose($fp);
-	
-	header("Location:accueil.php");
-	}
-	*/
 	
 	function inscription()
 	{

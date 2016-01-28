@@ -27,7 +27,6 @@
 					
 	      		</ul>
 	      		<ul class="nav navbar-nav navbar-right">
-					<li><a href="accueil.php?action=suprMois"><?php echo $lang['RAFFR'];?></a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $lang['LANG'];?><span class="caret"></span></a>
 	       				<ul class="dropdown-menu">

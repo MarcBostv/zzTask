@@ -18,13 +18,7 @@
 		$_SESSION['lang']=$_GET['lang'];
 		setcookie('lang', $_SESSION['lang']);
 	}
-	
-  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
-	{
-		suppressionTaskMois();
-		return;
-	}
-	
+
 		if(isset($_POST['newID']) && isset($_POST['newMDP']))
 	{
 		inscription();

@@ -13,17 +13,13 @@
 		$_SESSION['lang']=$_GET['lang'];
 		setcookie('lang', $_SESSION['lang']);
 	}
-	
-  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
+
+	if(isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description'])  && isset($_POST['val0'])  && isset($_POST['val1']))
 	{
-		suppressionTaskMois();
-		return;
-	}
-	
-	if(isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description']) && isset($_POST['value']))
-	{
-		suppressionTask($_GET['value'],0);
-		creationTask($_GET['value']);
+		$task[0]=$_POST['val0'];
+		$task[1]=$_POST['val1'];
+		suppressionTask($task[0],0);
+		creationTask($task);
 	}
 
 	if(!(isset($_GET['action'])) || !(isset($_GET['value'])))
@@ -73,7 +69,8 @@
 					<textarea class="form-control" name="description" placeholder="<?php echo $lang['DESCRIPTION'];?> ..." rows="3"><?php echo $task[5];?></textarea>
 				</div>
 			</div>
-			<input type="hidden" name="value" value"<?php echo $task;?>">
+			<input type="hidden" name="val0" value="<?php echo $task[0];?>">
+			<input type="hidden" name="val1" value="<?php echo $task[1];?>">
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-5">
 					<button type="submit" class="btn btn-primary" value="Modification"><?php echo $lang['MODIF'];?></button>

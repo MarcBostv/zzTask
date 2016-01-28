@@ -23,13 +23,7 @@
 			echo("Vous n'etes pas autorise a supprimer cette tache (petit coquin)");
 		return;
 	}
-	
-  	if(isset($_GET['action']) && $_GET['action'] == 'suprMois')
-	{
-		suppressionTaskMois();
-		return;
-	}
-	
+
 	include_once controleLang();
 	
 	$selected="accueil";
