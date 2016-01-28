@@ -123,17 +123,10 @@
 		header("Location:index.php");
 	}
 		
-<<<<<<< HEAD
 	function creationTask($oui, $nmTsk, $dbt, $f, $desc)
 	{			
 		// On vérifie que l'utilisateur a bien saisi tous les champs
 		if (isset($nmTsk) && isset($dbt) && isset($f) && isset($desc))
-=======
-	function creationTask($oui)
-	{			
-		// On vérifie que l'utilisateur a bien saisi tous les champs
-		if (isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description']))
->>>>>>> c0b065d1d2eff4f45b4d634086599659675a6b04
 		{
 			   // Si oui on récupère ces variables
 			   $id=$_SESSION['id'];
@@ -142,15 +135,6 @@
 		       $desc1=str_replace("::;;::","_",$desc);
 		       $description=str_replace("\n","",$desc1);
 		       
-<<<<<<< HEAD
-=======
-		       $nomTask=str_replace("::;;::","_",$nmTsk);
-		       //$description=str_replace("::;;::","_",$desc);
-		       
-		       $desc1=str_replace("::;;::","_",$desc);
-		       $description=str_replace("\n","",$desc1);
-		       
->>>>>>> c0b065d1d2eff4f45b4d634086599659675a6b04
 		       $pattern="[^0-9]";
 		       $fin=preg_replace($pattern," / / ",$f);
 		       $debut=preg_replace($pattern," / / ",$dbt);
