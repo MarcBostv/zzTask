@@ -58,9 +58,9 @@ class Login extends PHPUnit_Framework_TestCase
 	}
 */	
 	public function testInscription() {
-		$val=inscription("david", "test1", "motdepasse", "motdepasse");
+		$val=inscription("test", "motdepasse", "motdepasse");
 		$this->assertEquals($val, true);
-		$val2=inscription("david", "test1", "motdepasse", "fautedefrappe");
+		$val2=inscription("test2", "motdepasse", "fautedefrappe");
 		$this->assertFalse($val2, true);
 	}
 	

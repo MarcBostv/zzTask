@@ -428,4 +428,60 @@
 		}
 	}
 
+	function changeMdp($user, $omdp, $nmdp, $nmdp2)
+	{
+		$var=false;
+		if(strcmp($_SESSION['id'], "david") != 0)
+		{
+			header("Location:accueil.php");
+		}
+			
+		if (isset($user) AND isset($omdp) AND isset($nmdp) AND isset($nmdp2))
+		{	
+			$i=-1;
+			$lines=file("fichiers/log.txt");
+			$cp=count($lines);	
+			do
+			{
+				$cp--;
+				$i++;
+				$task = explode(" ", $lines[$i], 2);	
+			}while($cp >= 0 && (($task[0] != $user)));
+			
+			if(strcmp($task[0], $user) != 0)
+				echo ("l'utilisateur n'existe pas");
+			else
+			{
+				$comp=$user.$omdp;
+				$compar=hash('sha512', $comp);
+				if(strcmp($task[1], $compar) == 0)
+					echo "mauvais ancien mot de passe";
+				else
+				{
+					// Si oui on récupère ces variables, en hachant le mot de passe
+					if(strcmp($nmdp, $nmdp2)==0){
+						$pass=$user.$nmdp;
+					    $mdp=hash('sha512', $pass);
+					    $inser=$user . " " . $mdp . "\n";			    
+					    $fp=ouvertureFichier("fichiers/log.txt");
+					    
+					    $stop=0;
+					    $lines=file("fichiers/log.txt");
+					    foreach ($lines as $value){
+							$usr = explode(" ", $value, 2);
+							if($user != $usr[0])
+								fwrite($fp, $value);
+						}
+						fwrite($fp,	$inser);					
+					}else{
+						echo "Nouveaux mots de passes differents";
+					}
+				}
+			}
+		}else{
+			echo "Veuillez renseigner les champs";
+		}
+		return $var;
+	}
+	
 ?>

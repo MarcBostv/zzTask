@@ -19,14 +19,14 @@
 		setcookie('lang', $_SESSION['lang']);
 	}	
 	
-	if(isset($_POST['newID']) && isset($_POST['newMDP']))
+	if(isset($_POST['ID']) && isset($_POST['oldMDP']) && isset($_POST['newMDP']) && isset($_POST['newMDPbis']))
 	{
-		inscription($_POST['newID'], $_POST['newMDP'], $_POST['newMDPbis']);
+		changeMdp($_POST['ID'],$_POST['oldMDP'],$_POST['newMDP'],$_POST['newMDPbis']);
 	}
 	
 	include_once controleLang();
 	
-	$selected="nouvelUtilisateur";
+	$selected="nouveauMdp";
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,11 +43,17 @@
 	</head>
 	<body>
 		
-			<form class="form-horizontal" method="post" action="nouvelUtilisateur.php">
+			<form class="form-horizontal" method="post" action="">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="newID" class="col-sm-2 control-label"> <?php echo  $lang['USER_FIELD']; ?> </label>
+					<label class="control-label col-sm-2" for="ID" class="col-sm-2 control-label"> <?php echo  $lang['USER']; ?> </label>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" id="newID" name="newID" placeholder="<?php echo $lang['USER_FIELD']?>">
+						<input type="text" class="form-control" id="ID" name="ID" placeholder="<?php echo $lang['USER']?>">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="oldMDP" class="col-sm-2 control-label"> <?php echo  $lang['HPASSWORD_FIELD']; ?> </label>
+					<div class="col-sm-4">
+						<input type="password" class="form-control" id="oldMDP" name="oldMDP" placeholder="<?php echo $lang['HPASSWORD_FIELD']?>">
 					</div>
 				</div>
 				<div class="form-group">
@@ -64,7 +70,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-primary" value="Creation"> <?php echo  $lang['SIGNUP']; ?> </button>
+						<button type="submit" class="btn btn-primary" value="Creation"> <?php echo  $lang['VALID']; ?> </button>
 					</div>
 				</div>
 			</form>
