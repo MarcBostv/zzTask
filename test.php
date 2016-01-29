@@ -7,6 +7,7 @@ class Login extends PHPUnit_Framework_TestCase
 		echo "I run before each test \n";
 	}
 
+
 	public function testControleLang(){
 		$_SESSION['lang']='';
 		$r1=controleLang();
@@ -35,34 +36,17 @@ class Login extends PHPUnit_Framework_TestCase
 		$val2=connexion("david", "mauvaismdp");
 		$this->assertFalse($val2, true);
 	}
-/*	
-	public function testTaskPassees() {
-		$val=taskPassees("david");
-		$this->assertEquals($val, true);
-		$val2=taskPassees("userbidon");
-		$this->assertFalse($val2, true);
+	
+	public function testInsertionFichier() {
+		$val=insertionFichier(-52, "david", "test.txt");
+		$this->assertEquals($val, false);
+	}	
+
+	public function testSuppression() {
+		$val=suppressionTask(-52, 0, "test.txt");
+		$this->assertEquals($val, false);
 	}
 	
-	public function testTaskPresentes() {
-		$val=taskPresentes("david");
-		$this->assertEquals($val, true);
-		$val2=taskPresentes("userbidon");
-		$this->assertFalse($val2, true);
-	}
-	
-	public function testTaskFutures() {
-		$val=taskFutures("david");
-		$this->assertEquals($val, true);
-		$val2=taskPresentes("userbidon");
-		$this->assertFalse($val2, true);
-	}
-*/	
-	public function testInscription() {
-		$val=inscription("test", "motdepasse", "motdepasse");
-		$this->assertEquals($val, true);
-		$val2=inscription("test2", "motdepasse", "fautedefrappe");
-		$this->assertFalse($val2, true);
-	}
 	
 	public function tearDown() {
 		echo "I run after each test \n";

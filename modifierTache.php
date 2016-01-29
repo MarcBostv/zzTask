@@ -18,7 +18,7 @@
 	{
 		$task[0]=$_POST['val0'];
 		$task[1]=$_POST['val1'];
-		suppressionTask($task[0],0);
+		suppressionTask($task[0],0, "task.txt");
 		creationTask($task, $_POST['nomTask'], $_POST['debut'], $_POST['fin'], $_POST['description']);
 	}
 
