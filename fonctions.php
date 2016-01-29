@@ -4,31 +4,39 @@
     { 
         session_start(); 
     } 
-    
-	function controleSession() //ne pas tester
+     
+    /*This function is used to check the current session
+     * 
+     * */
+     
+	function controleSession()
 	{
 		if($_SESSION['connect']!=1)
 		{
-			// Si ce n'est pas le cas, on retourne à l'index
+			// If we are not connected, we go back to the homepage
 			header("Location:index.php");
 			exit;
 		}
 	}
 	
+	/*Function used to check the language
+	 * 
+	 * */
+	
 	function controleLang()
 	{
-		if(!isset($_SESSION['lang']))
+		if(!isset($_SESSION['lang']))	//If we are not connected
 		{
-			if(isset($_COOKIE['lang'])){
+			if(isset($_COOKIE['lang'])){	//We check the cookie to get the language
 				$_SESSION['lang']=$_COOKIE['lang'];
 			}else{
-				$_SESSION['lang']='';
+				$_SESSION['lang']='';	//Else we use the default language
 			}
 		}
 		
 		$lang=$_SESSION['lang'];
 		
-		switch ($lang) {
+		switch ($lang) {	//These are all the languages used. French is the default
 			case 'en':
 			$lang_file = 'langEn.php';
 			break;
@@ -43,12 +51,20 @@
 		return $lang_file;
 	}
 	
+	/*Function to get the current time. We will use this to check the dates entered by the user
+	 * 
+	 * */
+	
 	function getTime()
 	{
 		date_default_timezone_set('Europe/Paris');
-		$date = date('d/m/Y', time());
+		$date = date('d/m/Y', time()); //We use the format Day(DD)/Month(MM)/Year(YYYY)
 		return $date;
 	}
+	
+	/*Function used to open a file
+	 * 
+	 * */
 	
 	function ouvertureFichier($nomFichier)
 	{
@@ -56,79 +72,84 @@
 			echo "Erreur ouverture fichier !";
 			$fp=false;
 		}
-		return $fp;
+		return $fp; //We check if the openning worked correctly
 	}
+	
+	/*Function used to connect. It takes the user's ID and his password in parameters 
+	 * 
+	 * */
 	
 	function connexion($identifiant, $motdepasse)
 	{
 		$var=false;
-		// On initialise connect à 0
 		$_SESSION['connect']=0; 
 		
-		// On vérifie que l'utilisateur a bien tapé le login et le mot de passe
+		// We check that the user entered correctly his ID and his password
 		if (isset($motdepasse) AND isset($identifiant))
 		{
-				// Si oui on récupère ces variables, en hachant le mot de passe
+				// If yes, we recover all the informations
 				$pass=$identifiant.$motdepasse;
 		        $mdp=hash('sha512', $pass);
 		        $id=$identifiant;
 		}
 		else
 		{
-				// Sinon ces variables ne valent rien
 		        $mdp="";
 		        $id="";
 		}
 		
-			// On crée une variable, composée du login et du mot de passe codé, format des données contenues dans log.txt
+			// We create a variable coposed of the user's ID and the ciphed password, these datas are stored in log.txt
 			$test=$id . " " . $mdp . "\n";
 		
-		// On essaie d'ouvrir le fichier log.txt
 		if(!$monfichier = fopen("fichiers/log.txt", "r"))
 		{
-			// Si on y arrive pas, message d'erreur
 			echo("erreur ouverture fichier");
 		}
 		else
 		{	
-			// Sinon on lit le fichier ligne par ligne, tant qu'on est déconnecté et que le fichier n'est pas fini
+			// We check the file line per line
 			$ligne = fgets($monfichier);
 			while(!feof($monfichier) and $_SESSION['connect'] == 0)
 			{
-				// Si une ligne est équivalente à notre variable "login passwordHaché"
+				// If the line is equal to "login passwordCiphed"
 				if ($test==$ligne)
 				{
 					$var=true;
-					// Alors connect passe à 1, et on stocke l'id de l'utilisateur
+					// We set connect at "1" and we store the id
 					$_SESSION['connect']=1;
 					$_SESSION['id']=$id;
 				}
-				// Puis on lit la ligne suivante avant de reboucler
 				$ligne = fgets($monfichier);
 			}
-			// On ferme le fichier log.txt
 			fclose($monfichier);
 		}
 		
 		return $var;
 	}
+	
+	/*Function used to disconnect from the website
+	 * 
+	 * */
 		
 	function deconnexion()
 	{		
-		// On supprime toutes les données contenues dedans
 		session_unset();
-		// On supprime notre variable de session
 		session_destroy();
-		// On retourne à l'index pour une éventuelle autre connexion
 		header("Location:index.php");
 	}
-		
+	
+	/*This function is used to create new tasks. It takes in parameters the name of the task, the date of start, the date of stop, 
+	 * the description and a variable named "oui" which is used to change the treatment is this function is called from the form
+	 * Create Task and the form Modify Task.
+	 * 
+	 * */
+	
 	function creationTask($oui, $nmTsk, $dbt, $f, $desc)
 	{			
-		// On vérifie que l'utilisateur a bien saisi tous les champs
+		// We check taht the used entered the right parameters
 		if (isset($nmTsk) && isset($dbt) && isset($f) && isset($desc))
 		{
-			   // Si oui on récupère ces variables
+			   // If yes, we recover those variables
 			   $id=$_SESSION['id'];
 			   		       
 		       $nomTask=str_replace("::;;::","_",$nmTsk);		       
@@ -143,6 +164,10 @@
 		       
 		       $debutok=checkdate($month, $day, $year);
 		       $finok=checkdate($monthf, $dayf, $yearf);
+		       
+		       /*All these tests are here the be sure the user will enter correct start and stop dates
+		       A user won't be able to enter de date which is older that the current date or a start date
+		       which is older than the stop date*/
 		       
 		       if(!$debutok || !$finok)
 					echo("Erreur dans la saisie des dates");
@@ -170,12 +195,12 @@
 																			echo("Mauvais jour saisi");
 																			else {
 																				$idTask = rand(0, 1000000);
-																				//on concatene
+																				//We concatenate
 																				$champs=$idTask . "::;;::" . $id . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
 																	       
-																				//on met en forme AAAAMMJJ
+																				//We put it in the right format
 																				$fin=$yearf.$monthf.$dayf;
-																				//on envoie dans le fichier
+																				//We write it in the file
 																				insertionFichier($fin, $champs);
 																				header("Location:nouvelleTache.php");
 																			}	
@@ -184,9 +209,7 @@
 													}else{
 														
 														$champs=$oui[0] . "::;;::" . $oui[1] . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
-														//on met en forme AAAAMMJJ
 														$fin=$yearf.$monthf.$dayf;
-														//on envoie dans le fichier
 														insertionFichier($fin, $champs);
 														header('Location:modifierTache.php?action=modif&value='.$oui[0]);
 													}
@@ -202,6 +225,10 @@
 		}	
 	}	
 	
+	/*Function used to insert a new task in the file. It takes in parameters the stop date and the line
+	 * 
+	 * */
+	
 	function insertionFichier($fin, $champs)
 	{
 		$lines=file("fichiers/task.txt");
@@ -213,7 +240,7 @@
 			$finToCompare=$dateF[2].$dateF[1].$dateF[0];
 			$tableau[$finToCompare] = $value;
 			$i++;
-		}
+		}	//We create a board with containing all the tasks written in the file. The we sort the board and we insert the new task at the correct place
 		$tableau[$fin] = $champs;
 		ksort($tableau);
 		$fp=ouvertureFichier("fichiers/task.txt");
@@ -223,6 +250,10 @@
 			}
 	fclose($fp);
 	}
+	
+	/*Function used to print the tasks on the dashboard. It takes in parameteres the task and the user's ID
+	 * 
+	 * */
 				
 	function afficherTask($task, $id)
 	{
@@ -230,7 +261,7 @@
   		include $file;?>
 		<div class="panel panel-primary">
 			<a href="accueil.php?action=supr&value=<?php echo $task[0] ?>&user=<?php echo $task[1] ?>" class="btn btn-primary pull-right"><?php echo $lang['SUPR'];?></a>
-		<!-- Debut pop-up -->
+		<!-- Start pop-up -->
 			<a class="btn btn-large btn-info pull-right" onclick="popup('modifierTache.php?action=modif&value=<?php echo $task[0] ?>')"><?php echo $lang['MODIF'];?></a>
 			
 			<script LANGUAGE="JavaScript"> 
@@ -239,7 +270,7 @@
 					window.open(tmp,'popup','width=600,height=300,toolbar=false,scrollbars=false'); 
 				} 
 			</script>
-		<!-- Fin pop-up -->
+		<!-- Stop pop-up -->
 			<div class="panel-heading"><?php echo $task[2]?></div>
 			<div class="panel-body">
 				<p>					
@@ -254,6 +285,11 @@
 			</div>
 		</div><?php	
 	}
+	
+	/*This function is used to prints past tasks on the dashboard. It takes the user's ID in parameters to check if the user has the rights
+	 * see those tasks. Only the admin and the task owner can see a specific task. It the same for current and futures tasks.
+	 * 
+	 * */
 		
 	function taskPassees($id)
 	{
@@ -283,6 +319,10 @@
 		fclose($fp);
 		return $var;
 	}
+	
+	/*This function is used to prints current tasks on the dashboard.
+	 * 
+	 * */
 	
 	function taskPresentes($id)
 	{
@@ -315,6 +355,10 @@
 		return $var;
 	}
 	
+	/*This function is used to prints future tasks on the dashboard
+	 * 
+	 * */
+	
 	function taskFutures($id)
 	{
 		$var=false;
@@ -344,6 +388,11 @@
 		return $var;
 	}
 	
+	/*Function used to delete a task. It takes in parameter the user's ID, because a task can me deleted only by the admin and the
+	 * owner or the task, and "oui" which is used to know if this function is called from the Dashboard or the Modification page
+	 * 
+	 * */
+	
 	function suppressionTask($id, $oui)
 	{		
 		$lines=file("fichiers/task.txt");
@@ -364,7 +413,12 @@
 			header("Location:accueil.php");
 		}
 	}
-		
+	
+	/*Function used to create a new user. It takes in parameters the newx user's ID, the new password and a corfimation
+	 * of the new password wich is suposed to be the same string
+	 * 
+	 * */
+	
 	function inscription($id, $nmdp, $nmdpbis)
 	{
 		$var=false;
@@ -374,7 +428,7 @@
 		
 		if (isset($nmdp) AND isset($nmdpbis) AND isset($id))
 		{
-			// Si oui on récupère ces variables, en hachant le mot de passe
+			// If it's ok, we recover the variables and we cipher the password
 			if(strcmp($nmdp, $nmdpbis)==0){
 				$pass=$id.$nmdp;
 			    $mdp=hash('sha512', $pass);
@@ -408,6 +462,10 @@
 		return $var;
 	}
 	
+	/*Fonction called when a user want to modify a task. It takes the user's ID in parameters.
+	 * 
+	 * */
+	
 	function modifierTask($id)
 	{
 		$i=-1;
@@ -422,11 +480,16 @@
 				
 		if((strcmp($_SESSION['id'], "david") != 0) && (strcmp($_SESSION['id'], $task[1]) != 0))
 		{
-			echo ("modification non autorisée");
+			header("Location:accueil.php");
 		}else{
 			return $task;		
 		}
 	}
+	
+	/*Function used to change of password. It takes in parameters the user's name, the old mdp, the new mdp and a confirmation
+	 * of the new mdp which is suposed to be the same
+	 * 
+	 * */
 
 	function changeMdp($user, $omdp, $nmdp, $nmdp2)
 	{
@@ -458,7 +521,7 @@
 					echo "mauvais ancien mot de passe";
 				else
 				{
-					// Si oui on récupère ces variables, en hachant le mot de passe
+					// If it's ok, we recover the variables and we cipher the password
 					if(strcmp($nmdp, $nmdp2)==0){
 						$pass=$user.$nmdp;
 					    $mdp=hash('sha512', $pass);
