@@ -19,6 +19,7 @@
 		setcookie('lang', $_SESSION['lang']);
 	}	
 	
+	//We read all the parameters to call the function inscription
 	if(isset($_POST['newID']) && isset($_POST['newMDP']))
 	{
 		inscription($_POST['newID'], $_POST['newMDP'], $_POST['newMDPbis']);

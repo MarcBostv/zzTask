@@ -7,6 +7,7 @@
 		header("Location:accueil.php");
 	}
 	
+	//We can disconnect from this page.
 	if(isset($_GET['action']) && $_GET['action'] == 'deco')
 	{
 		setcookie('id', $_SESSION['id']);
@@ -19,8 +20,10 @@
 		setcookie('lang', $_SESSION['lang']);
 	}	
 	
+	//We read all the parameters entered by the user
 	if(isset($_POST['ID']) && isset($_POST['oldMDP']) && isset($_POST['newMDP']) && isset($_POST['newMDPbis']))
 	{
+		//This function will change the password only if the old password is correctly entered
 		changeMdp($_POST['ID'],$_POST['oldMDP'],$_POST['newMDP'],$_POST['newMDPbis']);
 	}
 	

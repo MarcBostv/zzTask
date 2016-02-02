@@ -18,8 +18,10 @@
 	
 	include_once controleLang();
   
+	//We read all the parameters to call the function creationTask
 	if(isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description']))
 	{
+		//The first parameter is set to -1 to pass threw all the tests
 		$task[0]=-1;
 		creationTask($task, $_POST['nomTask'], $_POST['debut'], $_POST['fin'], $_POST['description']);
 		

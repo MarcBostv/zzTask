@@ -463,6 +463,7 @@
 	}
 	
 	/*Fonction called when a user want to modify a task. It takes the user's ID in parameters.
+	 * If the user is not allowed to modify the task, it will reroute him to the homepage.
 	 * 
 	 * */
 	
@@ -487,7 +488,7 @@
 	}
 	
 	/*Function used to change of password. It takes in parameters the user's name, the old mdp, the new mdp and a confirmation
-	 * of the new mdp which is suposed to be the same
+	 * of the new mdp which is suposed to be the same. It will change the mdp only if the old one is correct
 	 * 
 	 * */
 

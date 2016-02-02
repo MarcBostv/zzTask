@@ -4,6 +4,7 @@
 	controleSession();
 	include_once controleLang();
 	
+	//If we are not indetified and we are trying to access to this page, we are directed rerouted to the homepage
 	if(!isset($_SESSION['id'])){
 		header("Location:accueil.php");
 	}
@@ -14,22 +15,27 @@
 		setcookie('lang', $_SESSION['lang']);
 	}
 
+	//We read all the inputs modified and, task's ID and the user's ID.
 	if(isset($_POST['nomTask']) && isset($_POST['debut']) && isset($_POST['fin']) && isset($_POST['description'])  && isset($_POST['val0'])  && isset($_POST['val1']))
 	{
+		//To modify a task, we delete the old one and create a new.
 		$task[0]=$_POST['val0'];
 		$task[1]=$_POST['val1'];
 		suppressionTask($task[0],0);
 		creationTask($task, $_POST['nomTask'], $_POST['debut'], $_POST['fin'], $_POST['description']);
 	}
 
+	//If the page is entered wthout the value "lodif", the user is rerouted to the homepage
 	if(!(isset($_GET['action'])) || !(isset($_GET['value'])))
 	{
 		header("Location:accueil.php");
 	}else{ 
+		//We get value witch is the user's ID. This value will be used by the function mocifierTask to check if the user is allowed to modify this task
 		if(isset($_GET['action']) && $_GET['action'] == 'modif' && isset($_GET['value']))
 		{
 			$task=modifierTask($_GET['value']);
 		}else{
+			//If not, he's rerouted.
 			header("Location:accueil.php");
 		}
 	}

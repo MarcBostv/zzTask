@@ -2,12 +2,13 @@
 	require('fonctions.php');
 	include_once controleLang();
 	
+	//We will call the connection function only if we have correct ID and password
 	if(isset($_POST['id']) && isset($_POST['mdp']))
 	{
 		if(connexion($_POST['id'], $_POST['mdp']))
 			header("Location:accueil.php");
 		else
-			header("Location:accueil.php?action=deco");
+			header("Location:accueil.php?action=deco"); //If not, we call the function deconnection that will appear like a page refreshing
 	}
 ?>
 
