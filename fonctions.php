@@ -523,14 +523,13 @@
 				$i++;
 				$task = explode(" ", $lines[$i], 2);	
 			}while($cp >= 0 && (($task[0] != $user)));
-			
 			if(strcmp($task[0], $user) != 0)
 				echo ("l'utilisateur n'existe pas");
 			else
-			{
-				$comp=$user.$omdp;
-				$compar=hash('sha512', $comp);
-				if(strcmp($task[1], $compar) == 0)
+			{	$comp=$user.$omdp;
+				$compa=hash('sha512', $comp);
+				$compar=$compa."\n";
+				if(strcmp($task[1], $compar) != 0)
 					echo "mauvais ancien mot de passe";
 				else
 				{
