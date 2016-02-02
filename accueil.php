@@ -22,11 +22,7 @@
 	{	
 		//Then we check if the user is authorized to delete this task
 		if((strcmp($_SESSION['id'],"david") == 0) || (strcmp($_SESSION['id'], $_GET['user']) == 0))
-<<<<<<< HEAD
 			suppressionTask($_GET['value'],1); 	//If all the test are OK, we call the suppression function
-=======
-			suppressionTask($_GET['value'],1, "task.txt");
->>>>>>> 1ed20c694e883827c98e09c8fbd9de05d5f41361
 		else
 			echo("Vous n'etes pas autorise a supprimer cette tache (petit coquin)"); //If not, we print an error message
 		return;
