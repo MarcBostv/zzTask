@@ -201,7 +201,7 @@
 																				//We put it in the right format
 																				$fin=$yearf.$monthf.$dayf;
 																				//We write it in the file
-																				insertionFichier($fin, $champs);
+																				insertionFichier($fin, $champs, "task.txt");
 																				header("Location:nouvelleTache.php");
 																			}	
 																	}
@@ -210,7 +210,7 @@
 														
 														$champs=$oui[0] . "::;;::" . $oui[1] . "::;;::" . $nomTask . "::;;::" . $debut . "::;;::" . $fin . "::;;::" . $description . "\n";
 														$fin=$yearf.$monthf.$dayf;
-														insertionFichier($fin, $champs);
+														insertionFichier($fin, $champs, "task.txt");
 														header('Location:modifierTache.php?action=modif&value='.$oui[0]);
 													}
 													}
@@ -229,26 +229,32 @@
 	 * 
 	 * */
 	
-	function insertionFichier($fin, $champs)
+	function insertionFichier($fin, $champs, $fic)
 	{
-		$lines=file("fichiers/task.txt");
-		$i=0;
-		$tableau=array();
-		foreach ($lines as $value){
-			$task = explode("::;;::", $value, 6);
-			$dateF=explode("/", $task[4],3);
-			$finToCompare=$dateF[2].$dateF[1].$dateF[0];
-			$tableau[$finToCompare] = $value;
-			$i++;
-		}	//We create a board with containing all the tasks written in the file. The we sort the board and we insert the new task at the correct place
-		$tableau[$fin] = $champs;
-		ksort($tableau);
-		$fp=ouvertureFichier("fichiers/task.txt");
-		
- 		foreach ($tableau as $k => $v) {
-				fwrite($fp, $v);
+		$ret=false;
+		if($fin>=0){
+			$lines=file("fichiers/".$fic);
+			$i=0;
+			$tableau=array();
+			foreach ($lines as $value){
+				$task = explode("::;;::", $value, 6);
+				$dateF=explode("/", $task[4],3);
+				$finToCompare=$dateF[2].$dateF[1].$dateF[0];
+				$tableau[$finToCompare] = $value;
+				$i++;
+			}	//We create a board with containing all the tasks written in the file. The we sort the board and we insert the new task at the correct place
+			$tableau[$fin] = $champs;
+			ksort($tableau);
+			if($fp=ouvertureFichier("fichiers/".$fic))
+			{
+		 		foreach ($tableau as $k => $v) {
+					fwrite($fp, $v);
+				}
+			fclose($fp);
+			$ret=true;
 			}
-	fclose($fp);
+		}
+		return $ret;
 	}
 	
 	/*Function used to print the tasks on the dashboard. It takes in parameteres the task and the user's ID
@@ -291,8 +297,9 @@
 	 * 
 	 * */
 		
-	function taskPassees($id)
+	function taskPassees()
 	{
+		$id=$_SESSION['id'];
 		$var=false;
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
@@ -324,8 +331,9 @@
 	 * 
 	 * */
 	
-	function taskPresentes($id)
+	function taskPresentes()
 	{
+		$id=$_SESSION['id'];
 		$var=false;
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
@@ -359,8 +367,9 @@
 	 * 
 	 * */
 	
-	function taskFutures($id)
+	function taskFutures()
 	{
+		$id=$_SESSION['id'];
 		$var=false;
 		$auj=getTime();
 		$dateAuj=explode("/", $auj,3);
@@ -393,25 +402,31 @@
 	 * 
 	 * */
 	
-	function suppressionTask($id, $oui)
-	{		
-		$lines=file("fichiers/task.txt");
-		$tableau=array();
-		foreach ($lines as $value){
-			$task = explode("::;;::", $value, 6);
-			$tableau[$task[0]] = $value;
+	function suppressionTask($id, $oui, $fichier)
+	{	
+		$ret=false;
+		if($id>=0)
+		{
+			$lines=file("fichiers/".$fichier);
+			$tableau=array();
+			foreach ($lines as $value){
+				$task = explode("::;;::", $value, 6);
+				$tableau[$task[0]] = $value;
+			}
+			if($fp=fopen("fichiers/".$fichier, "w+"))
+			{
+		 		foreach ($tableau as $task => $ligne) {
+					if($task != $id)
+						fwrite($fp, $ligne);
+				}
+				fclose($fp);
+				$ret=true;
+			}
+			if($oui==1){
+				header("Location:accueil.php");
+			}
 		}
-		$fp=fopen("fichiers/task.txt", "w+");
-		
- 		foreach ($tableau as $task => $ligne) {
-			if($task != $id)
-				fwrite($fp, $ligne);
-		}
-		fclose($fp);
-	
-		if($oui==1){
-			header("Location:accueil.php");
-		}
+		return $ret;
 	}
 	
 	/*Function used to create a new user. It takes in parameters the newx user's ID, the new password and a corfimation

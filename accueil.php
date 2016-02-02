@@ -22,7 +22,11 @@
 	{	
 		//Then we check if the user is authorized to delete this task
 		if((strcmp($_SESSION['id'],"david") == 0) || (strcmp($_SESSION['id'], $_GET['user']) == 0))
+<<<<<<< HEAD
 			suppressionTask($_GET['value'],1); 	//If all the test are OK, we call the suppression function
+=======
+			suppressionTask($_GET['value'],1, "task.txt");
+>>>>>>> 1ed20c694e883827c98e09c8fbd9de05d5f41361
 		else
 			echo("Vous n'etes pas autorise a supprimer cette tache (petit coquin)"); //If not, we print an error message
 		return;
@@ -38,7 +42,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<!-- > Titre de la page, apparait sur l'onglet de la page <-->
+		<!-- > Head of the page <-->
 		<title> <?php echo $lang['PAGE_TITLE']; ?></title>
 		<link rel="stylesheet" href="bootstrap.css">	
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -50,7 +54,7 @@
 
 	<body>
 		<div class="row">
-			<!-- colone de gauche-->
+			<!-- left column -->
 			<div class="col-md-4">
 				<div class="thumbnail">
 					<div class="caption">
@@ -58,13 +62,13 @@
 							<h3><?php echo $lang['T_PAST']; ?></h3>
 						</div>
 						
-						<?php taskPassees($_SESSION['id']);?>
+						<?php taskPassees();?>
 						
 					</div>
 				</div>
 			</div>
 
-			<!-- colone du milieu-->
+			<!-- center column -->
 			<div class="col-md-4">
 				<div class="thumbnail">
 					<div class="caption">
@@ -72,13 +76,13 @@
 							<h3><?php echo $lang['T_PRES']; ?></h3>
 						</div>
 						
-						<?php taskPresentes($_SESSION['id']);?>
+						<?php taskPresentes();?>
 
 					</div>
 				</div>
 			</div>
 
-			<!-- colone de droite-->
+			<!-- right column -->
 			<div class="col-md-4">
 				<div class="thumbnail">
 					<div class="caption">
@@ -86,7 +90,7 @@
 							<h3><?php echo $lang['T_FUTURE']; ?></h3>
 						</div>
 						
-						<?php taskFutures($_SESSION['id']);?>
+						<?php taskFutures();?>
 						
 					</div>
 				</div>
