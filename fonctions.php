@@ -68,11 +68,8 @@
 	
 	function ouvertureFichier($nomFichier)
 	{
-		if ( ($fp = fopen($nomFichier, "r+"))!=true ) {
-			echo "Erreur ouverture fichier !";
-			$fp=false;
-		}
-		return $fp; //We check if the openning worked correctly
+		$fp = fopen($nomFichier, "r+");
+		return $fp; //We return the file pointer
 	}
 	
 	/*Function used to connect. It takes the user's ID and his password in parameters 
